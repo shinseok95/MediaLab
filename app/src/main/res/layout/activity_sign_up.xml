@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".View.SignUpActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        app:theme="@style/ToolbarColoredBackArrow"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        android:theme="@style/ToolbarTheme"
+        android:elevation="4dp"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="55dp"
+                android:text="학번 : "
+                android:textSize="20dp"
+                android:fontFamily="@font/nanumbarungothic"/>
+
+            <TextView
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/signUpStudentID"
+                android:fontFamily="@font/nanumbarungothic"
+                android:textSize="20dp"
+                android:maxLength="10"
+                android:maxLines="1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="55dp"
+                android:text="이름 : "
+                android:textSize="20dp"
+                android:fontFamily="@font/nanumbarungothic"/>
+
+            <EditText
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/signUpNameID"
+                android:fontFamily="@font/nanumbarungothic"
+                android:textSize="20dp"
+                android:maxLength="5"
+                android:maxLines="1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="55dp"
+                android:text="학과 : "
+                android:textSize="20dp"
+                android:fontFamily="@font/nanumbarungothic"/>
+
+            <EditText
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/signUpDepartmentID"
+                android:fontFamily="@font/nanumbarungothic"
+                android:hint="미디어커뮤니케이션학부"
+                android:textSize="20dp"
+                android:maxLength="11"
+                android:maxLines="1"/>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="210dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="25dp"
+            android:elevation="5dp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#9bcfdf"
+            android:text="등록"
+            android:textSize="30dp"
+            android:fontFamily="@font/nanumbarungothicbold"
+            app:rippleColor="@color/colorAccent"
+            android:id="@+id/signUpID"
+            android:onClick="onClick"/>
+    </LinearLayout>
+
+
+</LinearLayout>
