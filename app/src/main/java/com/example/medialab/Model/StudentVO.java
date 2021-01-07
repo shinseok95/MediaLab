@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
-public class Student implements Serializable {
+public class StudentVO implements Serializable {
 
     private String name;
     private int studentId;
@@ -15,9 +15,9 @@ public class Student implements Serializable {
     private String purpose;
     private String computerNumber;
 
-    public Student(){}
+    public StudentVO(){}
 
-    public Student(String name, int studentId, String department, String accessTime, String entranceTime, String exitTime){
+    public StudentVO(String name, int studentId, String department, String accessTime, String entranceTime, String exitTime){
         this.name = name;
         this.studentId = studentId;
         this.department = department;
@@ -26,11 +26,11 @@ public class Student implements Serializable {
         this.exitTime = exitTime;
     }
 
-    public Student(String name, int studentId, String accessTime){
+    public StudentVO(String name, int studentId, String accessTime){
         this(name,studentId,null,accessTime,null,null);
     }
 
-    public Student(int studentId, String accessTime){
+    public StudentVO(int studentId, String accessTime){
         this(null,studentId,null,accessTime,null,null);
     }
 

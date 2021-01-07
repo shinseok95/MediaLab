@@ -34,8 +34,8 @@ public class DeveloperInfoActivity extends BaseActivity {
                 .setCover(Color.rgb(155,207,223))
                 .setName("신현석")
                 .setSubTitle("광운대학교 소프트웨어학부")
-                .setBrief("문의하실 부분은 "+"\nInstagram DM을 통해 연락주세요.")
-                .setAppIcon(R.mipmap.ic_launcher)
+                .setBrief("문의하실 부분은\n"+"Instagram DM을 통해 연락주세요.")
+                .setAppIcon(R.drawable.media_icon)
                 .setAppName(R.string.app_name)
                 .addInstagramLink("shin__seok")
                 .addGitHubLink("shinseok95")
@@ -46,9 +46,6 @@ public class DeveloperInfoActivity extends BaseActivity {
                 .build();
 
         LayoutInflater inflater = getLayoutInflater();
-
         addContentView(view, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
-
     }
-
 }

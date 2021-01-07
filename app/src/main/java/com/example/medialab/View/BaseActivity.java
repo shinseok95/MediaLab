@@ -19,7 +19,6 @@ public class BaseActivity  extends AppCompatActivity implements BaseContract.Vie
     protected final int MANAGER_ACTIVITY_REQUEST_CODE = 1003;
     protected final int DEVELOPER_INFO_ACTIVITY_REQUEST_CODE = 1004;
 
-
     @Override
     public void showToast(final String msg) {
         runOnUiThread(new Runnable() {
@@ -66,5 +65,4 @@ public class BaseActivity  extends AppCompatActivity implements BaseContract.Vie
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

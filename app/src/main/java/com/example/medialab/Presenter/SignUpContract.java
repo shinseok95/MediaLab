@@ -1,15 +1,13 @@
 package com.example.medialab.Presenter;
 
-import com.example.medialab.Model.Student;
+import com.example.medialab.Model.StudentVO;
 
 public interface SignUpContract extends BaseContract{
 
     interface View extends BaseContract.View{
 
-        public boolean isNameFilled();
-        public boolean isDepartmentFilled();
-
-
+        boolean isNameFilled();
+        boolean isDepartmentFilled();
     }
 
     interface Presenter extends BaseContract.Presenter<SignUpContract.View>{
@@ -20,8 +18,7 @@ public interface SignUpContract extends BaseContract{
         @Override
         void releaseView();
 
-        public void signUpRequest(Student student);
-
+        void signUpRequest(StudentVO studentVO);
     }
 
 }

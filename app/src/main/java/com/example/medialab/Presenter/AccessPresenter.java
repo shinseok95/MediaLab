@@ -2,53 +2,53 @@ package com.example.medialab.Presenter;
 
 import android.content.ContentValues;
 
-import com.example.medialab.Model.DBManager;
-import com.example.medialab.Model.Student;
+import com.example.medialab.Model.DBManageServiceImpl;
+import com.example.medialab.Model.StudentDAO;
+import com.example.medialab.Model.StudentVO;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class AccessPresenter extends BasePresenter implements AccessContract.Presenter{
 
     AccessContract.View view;
 
-    public AccessPresenter(){
+    private AccessPresenter(){
         super();
     }
 
     public AccessPresenter(AccessContract.View view){
         this.view=view;
-        dbManager = DBManager.getInstance(view.getInstanceContext());
+        dBManager = new DBManageServiceImpl(view.getInstanceContext());
     }
 
     /*-----------------------Request 관련 메소드----------------------------*/
 
     @Override
-    public void accessRequest(Student student) {
+    public void accessRequest(StudentVO studentVO) {
 
-        boolean isDateUpdate = dbManager.isDateUpdate(student.getAccessDay());
+        boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
 
         if(!isDateUpdate)
-            dbManager.updateVisitorTable(student.getAccessDay());
+            dBManager.updateVisitorTable(studentVO.getAccessDay());
 
         long isSuccess;
         calendar = Calendar.getInstance();
         String entranceTime = dateFormat.format(calendar.getTime());
 
-        student.setEntranceTime(entranceTime);
+        studentVO.setEntranceTime(entranceTime);
 
         ContentValues addRowValue = new ContentValues();
-        addRowValue.put("name",student.getName());
-        addRowValue.put("studentId",student.getStudentId());
-        addRowValue.put("department",student.getDepartment());
-        addRowValue.put("purpose",student.getPurpose());
-        addRowValue.put("computerNumber",student.getComputerNumber());
-        addRowValue.put("entranceTime",student.getEntranceTime());
+        addRowValue.put("name", studentVO.getName());
+        addRowValue.put("studentId", studentVO.getStudentId());
+        addRowValue.put("department", studentVO.getDepartment());
+        addRowValue.put("purpose", studentVO.getPurpose());
+        addRowValue.put("computerNumber", studentVO.getComputerNumber());
+        addRowValue.put("entranceTime", studentVO.getEntranceTime());
 
-        isSuccess = dbManager.registerVisitor(addRowValue);
+        isSuccess = dBManager.registerVisitor(addRowValue);
 
         if(isSuccess != -1) {
-            view.showToast("("+student.getEntranceTime()+") " + student + " 입장");
+            view.showToast(studentVO + " 입장("+ studentVO.getEntranceTime()+")");
             view.moveToMainActivity(RESULT_OK);
         }
         else {

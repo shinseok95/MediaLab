@@ -1,13 +1,12 @@
 package com.example.medialab.Presenter;
 
-import com.example.medialab.Model.Student;
+import com.example.medialab.Model.StudentVO;
 
 public interface MainContract {
 
     interface View extends BaseContract.View{
 
-        void moveToAnotherActivity(Student student, int requestCode);
-
+        void moveToAnotherActivity(StudentVO studentVO, int requestCode);
     }
 
     interface Presenter extends BaseContract.Presenter<View>{

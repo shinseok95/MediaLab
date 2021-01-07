@@ -2,8 +2,9 @@ package com.example.medialab.Presenter;
 
 import android.database.Cursor;
 
-import com.example.medialab.Model.DBManager;
-import com.example.medialab.Model.Student;
+import com.example.medialab.Model.DBManageService;
+import com.example.medialab.Model.StudentDAO;
+import com.example.medialab.Model.StudentVO;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,10 +31,10 @@ public class BasePresenter {
     protected final int MANAGER_ACTIVITY_REQUEST_CODE = 1003;
     protected final int DEVELOPER_INFO_ACTIVITY_REQUEST_CODE = 1004;
 
-    protected String[] memBerColumns = new String[] {"studentId","name","department","warning"};
+    protected String[] memBerColumns = new String[] {"studentId","name","department","warning","manager","warningReason"};
     protected String[] visitorColumns = new String[] {"_id","name","studentId","department","purpose","computerNumber","entranceTime","exitTime"};
 
-    protected DBManager dbManager = null;
+    protected DBManageService dBManager =null;
 
     protected boolean isAuthentic(String scanData){
 
@@ -48,51 +49,105 @@ public class BasePresenter {
             return false;
     }
 
-    protected Student scanDataParsing(String scanData){
+    protected StudentVO scanDataParsing(String scanData){
 
         int studentID = Integer.parseInt(scanData.substring(idBeginIdx,idEndIdx));
         String accessDate = scanData.substring(dateBeginIdx,dateEndIdx);
-        Student student = new Student(studentID,accessDate);
+        StudentVO studentVO = new StudentVO(studentID,accessDate);
 
-        return student;
+        return studentVO;
+    }
+
+    boolean isFirstVisit(StudentVO studentVO){
+
+        boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
+
+        if(!isDateUpdate)
+            dBManager.updateVisitorTable(studentVO.getAccessDay());
+
+        Cursor visitorCursor = dBManager.visitorQuery(visitorColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
+
+        if (visitorCursor.moveToFirst())
+            return false;
+        else
+            return true;
+    }
+
+    boolean isMember(StudentVO studentVO){
+        Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
+
+        if(memberCursor.moveToFirst())
+            return true;
+        else
+            return false;
+    }
+
+    boolean isManager(StudentVO studentVO){
+
+        Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
+
+        if(memberCursor.moveToFirst() && memberCursor.getInt(4)==1)
+            return true;
+        else
+            return false;
+    }
+
+    boolean isExitRequest(StudentVO studentVO){
+
+        String exitTime;
+        boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
+
+        if(!isDateUpdate)
+            dBManager.updateVisitorTable(studentVO.getAccessDay());
+
+        Cursor visitorCursor = dBManager.visitorQuery(visitorColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
+
+        if(visitorCursor.moveToLast()){
+            exitTime = visitorCursor.getString(7);
+
+            if(exitTime!=null)
+                return false;
+            else
+                return true;
+        }
+        else
+            return false;
+    }
+
+    boolean isWarningMember(StudentVO studentVO){
+
+        Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
+
+        if(memberCursor.moveToFirst() && memberCursor.getInt(3)==1)
+            return true;
+        else
+            return false;
+    }
+
+    int getVisitSequenceID(StudentVO studentVO){
+
+        int _id;
+        boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
+
+        if(!isDateUpdate)
+            dBManager.updateVisitorTable(studentVO.getAccessDay());
+
+        Cursor visitorCursor = dBManager.visitorQuery(visitorColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
+
+        if(visitorCursor.moveToLast()){
+            _id = visitorCursor.getInt(0);
+            return _id;
+        }
+        else
+            return -1;
     }
 
     protected String getAuthenticationCode(){
         return authenticationCode;
     }
 
-    boolean isMember(Student student){
-
-        Cursor memberCursor = dbManager.memberQuery(memBerColumns,"studentID="+ student.getStudentId(),null,null,null,null);
-
-        if(memberCursor.moveToFirst())
-            return true;
-        else
-            return false;
-
-    }
-    boolean isFirstVisit(Student student){
-
-        boolean isDateUpdate = dbManager.isDateUpdate(student.getAccessDay());
-
-        if(!isDateUpdate)
-            dbManager.updateVisitorTable(student.getAccessDay());
-
-        Cursor visitorCursor = dbManager.visitorQuery(visitorColumns,"studentID="+ student.getStudentId(),null,null,null,null);
-
-        if(visitorCursor.moveToFirst())
-            return false;
-        else
-            return true;
-
-    }
-    /*
-    boolean isManager(Student student){
-
-    }
-    */
 
     public void dbClose(){
-        dbManager.close();
+        dBManager.close();
     }
 }

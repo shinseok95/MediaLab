@@ -5,36 +5,34 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class DBManager extends SQLiteOpenHelper {
+public class StudentDAO extends SQLiteOpenHelper {
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
     Calendar calendar = Calendar.getInstance();
 
     private static final String FILE_NAME = "EntryList.db";
     private static final String TABLE_MEMBER= "Member";
-    private static final String TABLE_MANAGER ="Manager";
     private String TABLE_TODAY_VISITOR_LIST ="Day_" + dateFormat.format(calendar.getTime());
     private static final int DB_VERSION = 1;
 
     private Context mContext = null;
-    private static DBManager mDBManager = null;
+    private static StudentDAO mStudentDAO = null;
 
-    public static DBManager getInstance(Context context){
+    public static StudentDAO getInstance(Context context){
 
-        if(mDBManager ==null) {
-            synchronized (DBManager.class) {
-                mDBManager = new DBManager(context,FILE_NAME,null,DB_VERSION);
+        if(mStudentDAO ==null) {
+            synchronized (StudentDAO.class) {
+                mStudentDAO = new StudentDAO(context,FILE_NAME,null,DB_VERSION);
             }
         }
-        return mDBManager;
+        return mStudentDAO;
     }
 
-    private DBManager(Context context, String dbName, SQLiteDatabase.CursorFactory factory, int version){
+    private StudentDAO(Context context, String dbName, SQLiteDatabase.CursorFactory factory, int version){
         super(context,dbName,factory,version);
         this.mContext = context;
     }
@@ -48,15 +46,10 @@ public class DBManager extends SQLiteOpenHelper {
                         "(" + "studentId INTEGER PRIMARY KEY, " +
                         "name TEXT, "+
                         "department TEXT, "+
-                        "warning INTEGER );"
+                        "warning INTEGER, "+
+                        "manager INTEGER, "+
+                        "warningReason TEXT);"
 
-        );
-
-        sqLiteDatabase.execSQL(
-
-                "CREATE TABLE IF NOT EXISTS "+ TABLE_MANAGER +
-                        "(" + "studentId INTEGER PRIMARY KEY, " +
-                        "name TEXT);"
         );
 
         sqLiteDatabase.execSQL(
@@ -106,10 +99,6 @@ public class DBManager extends SQLiteOpenHelper {
 
         return getWritableDatabase().insert(TABLE_MEMBER, null, addRowValue);
     }
-    public long registerManager(ContentValues addRowValue){
-
-        return getWritableDatabase().insert(TABLE_MANAGER, null, addRowValue);
-    }
     public long registerVisitor(ContentValues addRowValue){
 
         return getWritableDatabase().insert(TABLE_TODAY_VISITOR_LIST, null, addRowValue);
@@ -124,23 +113,6 @@ public class DBManager extends SQLiteOpenHelper {
     {
 
         return getReadableDatabase().query( TABLE_MEMBER,
-                columns,
-                selection,
-                selectionArgs,
-                groupBy,
-                having,
-                orderBy);
-    }
-
-    public Cursor managerQuery(String[] columns,
-                              String selection,
-                              String[] selectionArgs,
-                              String groupBy,
-                              String having,
-                              String orderBy )
-    {
-
-        return getReadableDatabase().query( TABLE_MANAGER,
                 columns,
                 selection,
                 selectionArgs,
@@ -176,17 +148,6 @@ public class DBManager extends SQLiteOpenHelper {
                 whereArgs );
     }
 
-    public int managerUpdate( ContentValues updateRowValue,
-                             String whereClause,
-                             String[] whereArgs )
-    {
-
-        return getWritableDatabase().update( TABLE_MANAGER,
-                updateRowValue,
-                whereClause,
-                whereArgs );
-    }
-
     public int visitorUpdate( ContentValues updateRowValue,
                              String whereClause,
                              String[] whereArgs )
@@ -202,13 +163,6 @@ public class DBManager extends SQLiteOpenHelper {
                        String[] whereArgs )
     {
         return getWritableDatabase().delete( TABLE_MEMBER,
-                whereClause, whereArgs);
-    }
-
-    public int managerDelete( String whereClause,
-                             String[] whereArgs )
-    {
-        return getWritableDatabase().delete( TABLE_MANAGER,
                 whereClause, whereArgs);
     }
 
@@ -249,7 +203,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void close(){
 
-        mDBManager=null;
+        mStudentDAO =null;
         mContext=null;
     }
 

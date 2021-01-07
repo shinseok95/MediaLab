@@ -1,14 +1,12 @@
 package com.example.medialab.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.medialab.Model.Student;
+import com.example.medialab.Model.StudentVO;
 import com.example.medialab.Presenter.AccessContract;
 import com.example.medialab.Presenter.AccessPresenter;
 import com.example.medialab.R;
@@ -21,7 +19,7 @@ public class AccessActivity extends BaseActivity implements AccessContract.View 
     EditText computerNumEdit;
     EditText purposeEdit;
 
-    Student student;
+    StudentVO studentVO;
     AccessPresenter accessPresenter;
 
     @Override
@@ -31,33 +29,6 @@ public class AccessActivity extends BaseActivity implements AccessContract.View 
 
         accessPresenter = new AccessPresenter(this);
         init();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        accessPresenter.releaseView();
-        accessPresenter = null;
-    }
-
-    public void init(){
-
-        setActionBar("QR 입장");
-
-        nameText = (TextView)findViewById(R.id.accessNameID);
-        studentIdText = (TextView)findViewById(R.id.accessStudentID);
-        departmentText = (TextView)findViewById(R.id.accessDepartmentID);
-        computerNumEdit = (EditText) findViewById(R.id.accessComputerID);
-        purposeEdit = (EditText) findViewById(R.id.accessPurposeID);
-
-        Intent intent = getIntent();
-        student = (Student)intent.getSerializableExtra("VISITOR");
-
-        nameText.setText(student.getName());
-        studentIdText.setText(String.valueOf(student.getStudentId()));
-        departmentText.setText(student.getDepartment());
-
     }
 
     public void onClick(View view) {
@@ -78,9 +49,9 @@ public class AccessActivity extends BaseActivity implements AccessContract.View 
                     return;
                 }
 
-                student.setComputerNumber(computerNumEdit.getText().toString());
-                student.setPurpose(purposeEdit.getText().toString());
-                accessPresenter.accessRequest(student);
+                studentVO.setComputerNumber(computerNumEdit.getText().toString());
+                studentVO.setPurpose(purposeEdit.getText().toString());
+                accessPresenter.accessRequest(studentVO);
                 break;
         }
     }
@@ -107,6 +78,34 @@ public class AccessActivity extends BaseActivity implements AccessContract.View 
             return false;
         else
             return true;
+    }
+
+    public void init(){
+
+        setActionBar("QR 입장");
+
+        nameText = (TextView)findViewById(R.id.accessNameID);
+        studentIdText = (TextView)findViewById(R.id.accessStudentID);
+        departmentText = (TextView)findViewById(R.id.accessDepartmentID);
+        computerNumEdit = (EditText) findViewById(R.id.accessComputerID);
+        purposeEdit = (EditText) findViewById(R.id.accessPurposeID);
+
+        Intent intent = getIntent();
+        studentVO = (StudentVO)intent.getSerializableExtra("VISITOR");
+
+        nameText.setText(studentVO.getName());
+        studentIdText.setText(String.valueOf(studentVO.getStudentId()));
+        departmentText.setText(studentVO.getDepartment());
+
+        computerNumEdit.requestFocus();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        accessPresenter.releaseView();
+        accessPresenter = null;
     }
 
 }

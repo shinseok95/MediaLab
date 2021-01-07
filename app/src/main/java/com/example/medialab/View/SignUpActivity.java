@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.medialab.Model.Student;
+import com.example.medialab.Model.StudentVO;
 import com.example.medialab.Presenter.SignUpContract;
 import com.example.medialab.Presenter.SignUpPresenter;
 import com.example.medialab.R;
@@ -17,7 +17,7 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
     TextView studentIdText;
     EditText departmentEdit;
 
-    Student student;
+    StudentVO studentVO;
     SignUpPresenter signUpPresenter;
 
     @Override
@@ -27,27 +27,6 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
 
         signUpPresenter = new SignUpPresenter(this);
         init();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        signUpPresenter.releaseView();
-        signUpPresenter = null;
-    }
-
-    public void init(){
-
-        setActionBar("정보등록");
-
-        nameEdit = (EditText)findViewById(R.id.signUpNameID);
-        studentIdText = (TextView)findViewById(R.id.signUpStudentID);
-        departmentEdit = (EditText)findViewById(R.id.signUpDepartmentID);
-
-        Intent intent = getIntent();
-        student = (Student)intent.getSerializableExtra("VISITOR");
-        studentIdText.setText(String.valueOf(student.getStudentId()));
     }
 
     public void onClick(View view) {
@@ -68,11 +47,10 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
                     return;
                 }
 
-                student.setName(nameEdit.getText().toString());
-                student.setDepartment(departmentEdit.getText().toString());
-                signUpPresenter.signUpRequest(student);
+                studentVO.setName(nameEdit.getText().toString());
+                studentVO.setDepartment(departmentEdit.getText().toString());
+                signUpPresenter.signUpRequest(studentVO);
                 break;
-
         }
     }
 
@@ -100,5 +78,26 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
             return true;
     }
 
+    public void init(){
 
+        setActionBar("정보등록");
+
+        nameEdit = (EditText)findViewById(R.id.signUpNameID);
+        studentIdText = (TextView)findViewById(R.id.signUpStudentID);
+        departmentEdit = (EditText)findViewById(R.id.signUpDepartmentID);
+
+        Intent intent = getIntent();
+        studentVO = (StudentVO)intent.getSerializableExtra("VISITOR");
+        studentIdText.setText(String.valueOf(studentVO.getStudentId()));
+
+        nameEdit.requestFocus();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        signUpPresenter.releaseView();
+        signUpPresenter = null;
+    }
 }

@@ -1,54 +1,51 @@
 package com.example.medialab.Presenter;
 
 import android.content.ContentValues;
-import android.util.Log;
 
-import com.example.medialab.Model.DBManager;
-import com.example.medialab.Model.Student;
+import com.example.medialab.Model.DBManageServiceImpl;
+import com.example.medialab.Model.StudentDAO;
+import com.example.medialab.Model.StudentVO;
 
 public class SignUpPresenter extends BasePresenter implements SignUpContract.Presenter{
 
     SignUpContract.View view;
 
-    public SignUpPresenter(){
+    private SignUpPresenter(){
         super();
     }
 
     public SignUpPresenter(SignUpContract.View view){
         this.view = view;
-        dbManager = DBManager.getInstance(view.getInstanceContext());
+        dBManager = new DBManageServiceImpl(view.getInstanceContext());
     }
 
     /*-----------------------Request 관련 메소드----------------------------*/
 
     @Override
-    public void signUpRequest(Student student) {
+    public void signUpRequest(StudentVO studentVO) {
 
-        boolean isDateUpdate = dbManager.isDateUpdate(student.getAccessDay());
+        boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
 
         if(!isDateUpdate)
-            dbManager.updateVisitorTable(student.getAccessDay());
+            dBManager.updateVisitorTable(studentVO.getAccessDay());
 
-       long isSuccess;
+        ContentValues addRowValue = new ContentValues();
+        addRowValue.put("studentId", studentVO.getStudentId());
+        addRowValue.put("name", studentVO.getName());
+        addRowValue.put("department", studentVO.getDepartment());
+        addRowValue.put("warning", 0);
+        addRowValue.put("manager",0);
 
+        long isSuccess = dBManager.registerMember(addRowValue);
 
-            ContentValues addRowValue = new ContentValues();
-            addRowValue.put("studentId", student.getStudentId());
-            addRowValue.put("name", student.getName());
-            addRowValue.put("department", student.getDepartment());
-            addRowValue.put("warning", 0);
-
-            isSuccess = dbManager.registerMember(addRowValue);
-
-            if(isSuccess >0) {
-                view.showToast(student + " : 등록완료");
-                view.moveToMainActivity(RESULT_OK);
-            }
-            else {
-                view.showToast("등록에 실패하셨습니다.");
-                view.moveToMainActivity(RESULT_CANCELED);
-            }
-
+        if(isSuccess >0) {
+            view.showToast(studentVO + " : 등록완료");
+            view.moveToMainActivity(RESULT_OK);
+        }
+        else {
+            view.showToast("등록에 실패하셨습니다.");
+            view.moveToMainActivity(RESULT_CANCELED);
+        }
     }
 
     /*--------------------------View 관련 메소드--------------------------*/

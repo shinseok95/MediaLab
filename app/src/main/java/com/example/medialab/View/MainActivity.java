@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.medialab.Model.Student;
+import com.example.medialab.Model.StudentVO;
 import com.example.medialab.Presenter.MainContract;
 import com.example.medialab.Presenter.MainPresenter;
 import com.example.medialab.R;
@@ -33,11 +33,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        try{
-            Thread.sleep(1000);
-            setTheme(R.style.AppTheme);
-        }catch (Exception e){}
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -45,31 +40,21 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         setActionBar("");
     }
 
-
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        mainPresenter.dbClose();
-        mainPresenter.releaseView();
-        mainPresenter = null;
-    }
-
-    @Override
-    public void moveToAnotherActivity(Student student, int requestCode) {
+    public void moveToAnotherActivity(StudentVO studentVO, int requestCode) {
 
         Intent intent;
         switch (requestCode){
 
             case ACCESS_ACTIVITY_REQUEST_CODE:
                 intent = new Intent(this, AccessActivity.class);
-                intent.putExtra("VISITOR", student);
+                intent.putExtra("VISITOR", studentVO);
                 startActivityForResult(intent,requestCode);
                 break;
 
             case SIGN_UP_ACTIVITY_REQUEST_CODE:
                 intent = new Intent(this, SignUpActivity.class);
-                intent.putExtra("VISITOR", student);
+                intent.putExtra("VISITOR", studentVO);
                 startActivityForResult(intent,requestCode);
                 break;
 
@@ -78,13 +63,11 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
             case MANAGER_ACTIVITY_REQUEST_CODE:
                 break;
+
             case DEVELOPER_INFO_ACTIVITY_REQUEST_CODE:
                 intent = new Intent(this, DeveloperInfoActivity.class);
                 startActivityForResult(intent,requestCode);
                 break;
-
-
-
         }
     }
 
@@ -218,6 +201,15 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
             mExitModeTime = SystemClock.uptimeMillis();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mainPresenter.dbClose();
+        mainPresenter.releaseView();
+        mainPresenter = null;
     }
 
 }
