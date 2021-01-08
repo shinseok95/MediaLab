@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".View.ManagerModeActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        app:theme="@style/ToolbarColoredBackArrow"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        android:theme="@style/ToolbarTheme"
+        android:elevation="4dp"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:elevation="5dp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#0071b9"
+            android:text="엑셀저장"
+            android:textSize="40dp"
+            android:fontFamily="@font/nanumbarungothicbold"
+            android:layout_marginBottom="10dp"
+            app:icon="@drawable/download"
+            app:iconSize="50dp"
+            app:rippleColor="@color/colorAccent"
+            android:id="@+id/managerModeExcelID"
+            android:onClick="onClick"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:elevation="5dp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#0071b9"
+            android:text="정보조회"
+            android:textSize="40dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/nanumbarungothicbold"
+            app:icon="@drawable/search_icon"
+            app:iconSize="40dp"
+            app:rippleColor="@color/colorAccent"
+            android:id="@+id/managerModeInfoSearchID"
+            android:onClick="onClick"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:elevation="5dp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#0071b9"
+            android:text="현재 사용자"
+            android:textSize="40dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/nanumbarungothicbold"
+            app:icon="@drawable/person_icon"
+            app:iconSize="40dp"
+            app:rippleColor="@color/colorAccent"
+            android:id="@+id/managerModeVisitorSearchID"
+            android:onClick="onClick"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:elevation="5dp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#0071b9"
+            android:text="암호설정"
+            android:textSize="40dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/nanumbarungothicbold"
+            app:icon="@drawable/password"
+            app:iconSize="40dp"
+            app:rippleColor="@color/colorAccent"
+            android:id="@+id/managerModePasswordSettingID"
+            android:onClick="onClick"/>
+
+    </LinearLayout>
+
+</LinearLayout>

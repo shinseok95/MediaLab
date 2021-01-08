@@ -1,21 +1,19 @@
 package com.example.medialab.View;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.medialab.R;
 import com.vansuita.materialabout.builder.AboutBuilder;
 import com.vansuita.materialabout.views.AboutView;
 
-public class DeveloperInfoActivity extends BaseActivity {
+public class DeveloperInfoActivity extends BaseActivity{
+
+    Button emergencyBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +26,15 @@ public class DeveloperInfoActivity extends BaseActivity {
     public void init(){
 
         setActionBar("개발자 정보");
+        emergencyBtn = (Button)findViewById(R.id.emergencyBtnID);
+        emergencyBtn.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View view) {
 
+                moveToCalledActivity(1);
+                return true;
+            }
+        });
         AboutView view = AboutBuilder.with(this)
                 .setPhoto(R.mipmap.profile_photo)
                 .setCover(Color.rgb(155,207,223))
@@ -45,7 +51,7 @@ public class DeveloperInfoActivity extends BaseActivity {
                 .setShowAsCard(true)
                 .build();
 
-        LayoutInflater inflater = getLayoutInflater();
         addContentView(view, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
     }
+
 }

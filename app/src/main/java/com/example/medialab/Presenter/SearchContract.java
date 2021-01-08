@@ -6,6 +6,11 @@ public interface SearchContract extends BaseContract {
 
     interface View extends BaseContract.View{
 
+        boolean setModifyStatus(boolean status);
+
+        boolean isNameFilled();
+        boolean isDepartmentFilled();
+
     }
 
     interface Presenter extends BaseContract.Presenter<SearchContract.View>{
@@ -15,6 +20,8 @@ public interface SearchContract extends BaseContract {
 
         @Override
         void releaseView();
+
+        void modifyRequest(StudentVO studentVO);
 
     }
 

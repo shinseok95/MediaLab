@@ -2,7 +2,7 @@ package com.example.medialab.Presenter;
 
 import com.example.medialab.Model.StudentVO;
 
-public interface MainContract {
+public interface MainContract extends BaseContract {
 
     interface View extends BaseContract.View{
 
@@ -20,7 +20,8 @@ public interface MainContract {
         void moveToAccessActivity(String scanData);
         void moveToSearchActivity(String scanData);
         void moveToSignUpActivity(String scanData);
-        void moveToManagerModeActivity(String scanData);
+        void moveToManagerModeActivity();
         void moveToDeveloperInfoActivity();
+        void moveToOTPActivity();
     }
 }

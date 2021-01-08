@@ -24,7 +24,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private final int ACCESS_QR_SCAN_REQUEST_CODE = 1;
     private final int SIGN_UP_QR_SCAN_REQUEST_CODE = 2;
     private final int SEARCH_QR_SCAN_REQUEST_CODE = 3;
-    private final int MANAGER_MODE_QR_SCAN_REQUEST_CODE = 4;
 
     private long mExitModeTime = 0L;
 
@@ -59,14 +58,24 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                 break;
 
             case SEARCH_ACTIVITY_REQUEST_CODE:
+                intent = new Intent(this, SearchActivity.class);
+                intent.putExtra("MEMBER", studentVO);
+                startActivityForResult(intent,requestCode);
                 break;
 
-            case MANAGER_ACTIVITY_REQUEST_CODE:
+            case MANAGER_MODE_ACTIVITY_REQUEST_CODE:
+                intent = new Intent(this, ManagerModeActivity.class);
+                startActivityForResult(intent,requestCode);
                 break;
 
             case DEVELOPER_INFO_ACTIVITY_REQUEST_CODE:
                 intent = new Intent(this, DeveloperInfoActivity.class);
                 startActivityForResult(intent,requestCode);
+                break;
+
+            case OTP_ACTIVITY_REQUEST_CODE:
+                intent = new Intent(this, OtpActivity.class);
+                startActivityForResult(intent,OTP_ACTIVITY_REQUEST_CODE);
                 break;
         }
     }
@@ -102,13 +111,23 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     }
 
     protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         final IntentResult result = IntentIntegrator.parseActivityResult(resultCode, data);
 
         if(result != null) {
 
             if(result.getContents() == null) {
-                super.onActivityResult(requestCode, resultCode, data);
+
+                switch (requestCode) {
+
+                    case OTP_ACTIVITY_REQUEST_CODE:
+                    case DEVELOPER_INFO_ACTIVITY_REQUEST_CODE:
+
+                        if(resultCode==1)
+                            mainPresenter.moveToManagerModeActivity();
+                        break;
+
+                }
             }
 
             else{
@@ -131,10 +150,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
                             case SEARCH_QR_SCAN_REQUEST_CODE:
                                 mainPresenter.moveToSearchActivity(scanData);
-                                break;
-
-                            case MANAGER_MODE_QR_SCAN_REQUEST_CODE:
-                                mainPresenter.moveToManagerModeActivity(scanData);
                                 break;
                         }
                     }
@@ -172,15 +187,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         switch (item.getItemId()){
 
             case R.id.managerMode:
-                qrScan(MANAGER_MODE_QR_SCAN_REQUEST_CODE);
+                mainPresenter.moveToOTPActivity();
                 break;
 
             case R.id.developerMode:
                 mainPresenter.moveToDeveloperInfoActivity();
                 break;
-
         }
-
         return super.onOptionsItemSelected(item);
     }
 

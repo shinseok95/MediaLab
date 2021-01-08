@@ -3,7 +3,6 @@ package com.example.medialab.Presenter;
 import android.database.Cursor;
 
 import com.example.medialab.Model.DBManageService;
-import com.example.medialab.Model.StudentDAO;
 import com.example.medialab.Model.StudentVO;
 
 import java.text.SimpleDateFormat;
@@ -24,12 +23,6 @@ public class BasePresenter {
     private final int dateBeginIdx = 18;
     private final int dateEndIdx = 26;
     private final String authenticationCode="_KW";
-
-    protected final int ACCESS_ACTIVITY_REQUEST_CODE = 1000;
-    protected final int SIGN_UP_ACTIVITY_REQUEST_CODE = 1001;
-    protected final int SEARCH_ACTIVITY_REQUEST_CODE = 1002;
-    protected final int MANAGER_ACTIVITY_REQUEST_CODE = 1003;
-    protected final int DEVELOPER_INFO_ACTIVITY_REQUEST_CODE = 1004;
 
     protected String[] memBerColumns = new String[] {"studentId","name","department","warning","manager","warningReason"};
     protected String[] visitorColumns = new String[] {"_id","name","studentId","department","purpose","computerNumber","entranceTime","exitTime"};

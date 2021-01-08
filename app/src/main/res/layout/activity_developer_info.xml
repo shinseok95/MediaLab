@@ -16,6 +16,13 @@
         android:layout_height="wrap_content"
         android:background="#ffffff">
 
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:backgroundTint="#ffffffff"
+            android:stateListAnimator="@null"
+            android:id="@+id/emergencyBtnID"/>
 
     </androidx.appcompat.widget.Toolbar>
 

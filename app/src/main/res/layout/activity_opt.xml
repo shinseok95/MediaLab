@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#303f9f"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".View.OtpActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:textColor="@android:color/white"
+        android:textSize="25dp"
+        android:text="Verification Code"
+        android:fontFamily="@font/nanumgothicextrabold"/>
+
+
+    <com.mukesh.OtpView
+        android:id="@+id/otp_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:inputType="numberPassword"
+        android:itemBackground="#303f9f"
+        android:textColor="@android:color/white"
+        app:OtpItemCount="4"
+        app:OtpLineColor="#3f51b5"
+        app:OtpViewType="rectangle"
+        android:imeOptions="actionDone"/>
+
+
+</LinearLayout>

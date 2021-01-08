@@ -4,12 +4,18 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.example.medialab.Model.DBManageServiceImpl;
-import com.example.medialab.Model.StudentDAO;
 import com.example.medialab.Model.StudentVO;
 
 import java.util.Calendar;
 
 public class MainPresenter extends BasePresenter implements MainContract.Presenter{
+
+    protected final int ACCESS_ACTIVITY_REQUEST_CODE = 1000;
+    protected final int SIGN_UP_ACTIVITY_REQUEST_CODE = 1001;
+    protected final int SEARCH_ACTIVITY_REQUEST_CODE = 1002;
+    protected final int MANAGER_MODE_ACTIVITY_REQUEST_CODE = 1003;
+    protected final int DEVELOPER_INFO_ACTIVITY_REQUEST_CODE = 1004;
+    protected final int OTP_ACTIVITY_REQUEST_CODE = 1005;
 
     MainContract.View view = null;
 
@@ -45,7 +51,7 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
 
             //경고 멤버라면
             if(isWarningMember(studentVO)) {
-                view.showToast("[경고] 입장불가\n" + "사유 : " + memberCursor.getString(5) + "\n" + "조교한테 문의하세요");
+                view.showWarningToast("[경고] 입장불가\t\t\n" + "사유 : " + memberCursor.getString(5) + "\n\n" + "조교한테 문의하세요");
                 return;
             }
             //오늘 첫 방문이라면
@@ -98,16 +104,42 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
     @Override
     public void moveToSearchActivity(String scanData) {
 
+        if(!isAuthentic(scanData)) {
+            view.showToast("인증에 실패했습니다");
+            return;
+        }
+
+        StudentVO studentVO = scanDataParsing(scanData); // QR 데이터 파싱
+
+        Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
+
+        if(memberCursor.moveToFirst()){
+
+            studentVO.setStudentId(memberCursor.getInt(0));
+            studentVO.setName(memberCursor.getString(1));
+            studentVO.setDepartment(memberCursor.getString(2));
+
+            view.moveToAnotherActivity(studentVO,SEARCH_ACTIVITY_REQUEST_CODE);
+        }
+
+        // 기존 멤버가 아니라면 -> Toast
+        else
+            view.showToast("정보를 등록해주세요");
     }
 
     @Override
-    public void moveToManagerModeActivity(String scanData) {
-
+    public void moveToManagerModeActivity() {
+        view.moveToAnotherActivity(null,MANAGER_MODE_ACTIVITY_REQUEST_CODE);
     }
 
     @Override
     public void moveToDeveloperInfoActivity() {
         view.moveToAnotherActivity(null,DEVELOPER_INFO_ACTIVITY_REQUEST_CODE);
+    }
+
+    @Override
+    public void moveToOTPActivity() {
+        view.moveToAnotherActivity(null,OTP_ACTIVITY_REQUEST_CODE);
     }
 
     /*--------------------------View 관련 메소드--------------------------*/

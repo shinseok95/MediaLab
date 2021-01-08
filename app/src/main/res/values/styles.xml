@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:actionOverflowButtonStyle">@style/AppTheme.OverFlow</item>
+        <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
     </style>
 
     <style name="AppTheme.OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
@@ -20,6 +21,35 @@
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">17dp</item>
+    </style>
+
+    <style name="warningtoast">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">#ffffff</item>
+        <item name="stFont">@font/nanumgothicbold</item>
+        <item name="stTextSize">14dp</item>
+        <item name="stColorBackground">#ff0000</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stStrokeWidth">3dp</item>
+        <item name="stStrokeColor">#fff</item>
+        <item name="stIconStart">@drawable/warning</item>
+        <item name="stLength">LONG</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">5dp</item>
+    </style>
+
+    <style name="importanttoast">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">#ffffff</item>
+        <item name="stFont">@font/nanumgothicbold</item>
+        <item name="stTextSize">14dp</item>
+        <item name="stColorBackground">#9bcfdf</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stStrokeWidth">3dp</item>
+        <item name="stStrokeColor">#fff</item>
+        <item name="stLength">LONG</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">5dp</item>
     </style>
 
 </resources>

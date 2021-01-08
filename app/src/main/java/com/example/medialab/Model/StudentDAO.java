@@ -47,7 +47,6 @@ public class StudentDAO extends SQLiteOpenHelper {
                         "name TEXT, "+
                         "department TEXT, "+
                         "warning INTEGER, "+
-                        "manager INTEGER, "+
                         "warningReason TEXT);"
 
         );

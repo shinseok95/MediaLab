@@ -3,7 +3,6 @@ package com.example.medialab.Presenter;
 import android.content.ContentValues;
 
 import com.example.medialab.Model.DBManageServiceImpl;
-import com.example.medialab.Model.StudentDAO;
 import com.example.medialab.Model.StudentVO;
 
 import java.util.Calendar;
@@ -49,11 +48,11 @@ public class AccessPresenter extends BasePresenter implements AccessContract.Pre
 
         if(isSuccess != -1) {
             view.showToast(studentVO + " 입장("+ studentVO.getEntranceTime()+")");
-            view.moveToMainActivity(RESULT_OK);
+            view.moveToCalledActivity(RESULT_OK);
         }
         else {
             view.showToast("입장에 실패하였습니다.");
-            view.moveToMainActivity(RESULT_CANCELED);
+            view.moveToCalledActivity(RESULT_CANCELED);
         }
     }
 

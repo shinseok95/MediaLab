@@ -3,7 +3,6 @@ package com.example.medialab.Presenter;
 import android.content.ContentValues;
 
 import com.example.medialab.Model.DBManageServiceImpl;
-import com.example.medialab.Model.StudentDAO;
 import com.example.medialab.Model.StudentVO;
 
 public class SignUpPresenter extends BasePresenter implements SignUpContract.Presenter{
@@ -40,11 +39,11 @@ public class SignUpPresenter extends BasePresenter implements SignUpContract.Pre
 
         if(isSuccess >0) {
             view.showToast(studentVO + " : 등록완료");
-            view.moveToMainActivity(RESULT_OK);
+            view.moveToCalledActivity(RESULT_OK);
         }
         else {
             view.showToast("등록에 실패하셨습니다.");
-            view.moveToMainActivity(RESULT_CANCELED);
+            view.moveToCalledActivity(RESULT_CANCELED);
         }
     }
 
