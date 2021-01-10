@@ -2,7 +2,9 @@ package com.example.medialab.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ public class AccessActivity extends BaseActivity implements AccessContract.View 
     TextView departmentText;
     EditText computerNumEdit;
     EditText purposeEdit;
+    Button accessBtn;
 
     StudentVO studentVO;
     AccessPresenter accessPresenter;
@@ -89,6 +92,7 @@ public class AccessActivity extends BaseActivity implements AccessContract.View 
         departmentText = (TextView)findViewById(R.id.accessDepartmentID);
         computerNumEdit = (EditText) findViewById(R.id.accessComputerID);
         purposeEdit = (EditText) findViewById(R.id.accessPurposeID);
+        accessBtn = (Button)findViewById(R.id.accessID);
 
         Intent intent = getIntent();
         studentVO = (StudentVO)intent.getSerializableExtra("VISITOR");
@@ -96,6 +100,32 @@ public class AccessActivity extends BaseActivity implements AccessContract.View 
         nameText.setText(studentVO.getName());
         studentIdText.setText(String.valueOf(studentVO.getStudentId()));
         departmentText.setText(studentVO.getDepartment());
+
+        computerNumEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+
+                if((keyEvent.getAction()==KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER){
+                    purposeEdit.requestFocus();
+                    return true;
+                }
+                else
+                    return false;
+            }
+        });
+
+        purposeEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+
+                if((keyEvent.getAction()==KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER){
+                    accessBtn.performClick();
+                    return true;
+                }
+                else
+                    return false;
+            }
+        });
 
         computerNumEdit.requestFocus();
     }

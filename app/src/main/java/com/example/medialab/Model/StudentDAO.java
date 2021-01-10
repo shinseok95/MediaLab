@@ -11,12 +11,12 @@ import java.util.Calendar;
 
 public class StudentDAO extends SQLiteOpenHelper {
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("_yyyyMMdd");
     Calendar calendar = Calendar.getInstance();
 
     private static final String FILE_NAME = "EntryList.db";
     private static final String TABLE_MEMBER= "Member";
-    private String TABLE_TODAY_VISITOR_LIST ="Day_" + dateFormat.format(calendar.getTime());
+    private String TABLE_TODAY_VISITOR_LIST =dateFormat.format(calendar.getTime());
     private static final int DB_VERSION = 1;
 
     private Context mContext = null;
@@ -174,7 +174,8 @@ public class StudentDAO extends SQLiteOpenHelper {
 
     public boolean isDateUpdate(String accessDate){
 
-        if(TABLE_TODAY_VISITOR_LIST.equals("Day_"+accessDate))
+        String parsingDate = '_'+accessDate;
+        if(TABLE_TODAY_VISITOR_LIST.equals(parsingDate))
             return true;
         else
             return false;
@@ -182,7 +183,8 @@ public class StudentDAO extends SQLiteOpenHelper {
 
     public void updateVisitorTable(String accessDate){
 
-        TABLE_TODAY_VISITOR_LIST ="Day_" + accessDate;
+        String parsingDate = '_'+accessDate;
+        TABLE_TODAY_VISITOR_LIST =parsingDate;
 
         getWritableDatabase().execSQL(
 
@@ -197,7 +199,26 @@ public class StudentDAO extends SQLiteOpenHelper {
                         "exitTime TEXT );"
 
         );
+    }
 
+    public void changeVisitorTable(String accessDate){
+
+        String parsingDate = '_'+accessDate;
+        TABLE_TODAY_VISITOR_LIST =parsingDate;
+    }
+
+    public boolean isTableExist(String date){
+
+        String parsingDate = '_'+date;
+        String query = "SELECT DISTINCT tbl_name from sqlite_master where tbl_name = '"+parsingDate+"'";
+        try (Cursor cursor = getReadableDatabase().rawQuery(query, null)) {
+            if(cursor!=null) {
+                if(cursor.getCount()>0) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     public void close(){

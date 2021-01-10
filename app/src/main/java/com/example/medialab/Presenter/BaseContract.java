@@ -13,7 +13,6 @@ public interface BaseContract {
     interface View{
         void showToast(String msg);
         void showWarningToast(String msg);
-        void showImportantToast(String msg);
         Context getInstanceContext();
         void moveToCalledActivity(int resultCode);
     }

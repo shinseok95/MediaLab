@@ -39,6 +39,10 @@ public interface DBManageService {
 
     public void updateVisitorTable(String accessDate);
 
+    public void changeVisitorTable(String accessDate);
+
+    public boolean isTableExist(String date);
+
     public void close();
 
 }

@@ -89,6 +89,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         intentIntegrator.setOrientationLocked(true);
         intentIntegrator.setPrompt("모바일 학생증을 스캔하세요");
         intentIntegrator.setRequestCode(requestCode);
+        //intentIntegrator.setCameraId(1);
         intentIntegrator.initiateScan();
     }
 

@@ -27,7 +27,7 @@
         <item name="stTextBold">true</item>
         <item name="stTextColor">#ffffff</item>
         <item name="stFont">@font/nanumgothicbold</item>
-        <item name="stTextSize">14dp</item>
+        <item name="stTextSize">15dp</item>
         <item name="stColorBackground">#ff0000</item>
         <item name="stSolidBackground">true</item>
         <item name="stStrokeWidth">3dp</item>
@@ -42,7 +42,7 @@
         <item name="stTextBold">true</item>
         <item name="stTextColor">#ffffff</item>
         <item name="stFont">@font/nanumgothicbold</item>
-        <item name="stTextSize">14dp</item>
+        <item name="stTextSize">15dp</item>
         <item name="stColorBackground">#9bcfdf</item>
         <item name="stSolidBackground">true</item>
         <item name="stStrokeWidth">3dp</item>

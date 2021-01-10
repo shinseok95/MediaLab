@@ -34,10 +34,11 @@ public class ManagerModeActivity extends BaseActivity implements ManagerModeCont
         switch (view.getId()){
 
             case R.id.managerModeExcelID:
-
+                managerModePresenter.moveToExcelDownloadActivity();
                 break;
 
             case R.id.managerModeInfoSearchID:
+                managerModePresenter.moveToMemberSearchActivity();
                 break;
 
             case R.id.managerModeVisitorSearchID:
@@ -61,12 +62,12 @@ public class ManagerModeActivity extends BaseActivity implements ManagerModeCont
         switch (requestCode) {
 
             case EXCEL_DOWNLOAD_ACTIVITY_REQUEST_CODE:
-                intent = new Intent(this, AccessActivity.class);
+                intent = new Intent(this, ExcelDownloadActivity.class);
                 startActivityForResult(intent, requestCode);
                 break;
 
             case MEMBER_SEARCH_ACTIVITY_REQUEST_CODE:
-                intent = new Intent(this, SignUpActivity.class);
+                intent = new Intent(this, SearchAndWarningActivity.class);
                 startActivityForResult(intent, requestCode);
                 break;
 

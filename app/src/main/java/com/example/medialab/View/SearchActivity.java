@@ -2,6 +2,7 @@ package com.example.medialab.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +15,7 @@ import com.example.medialab.R;
 
 public class SearchActivity extends BaseActivity implements SearchContract.View {
 
-    TextView nameEdit;
+    EditText nameEdit;
     TextView studentIdText;
     EditText departmentEdit;
     Button modifyBtn;
@@ -84,6 +85,32 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
         nameEdit.setText(studentVO.getName());
         studentIdText.setText(String.valueOf(studentVO.getStudentId()));
         departmentEdit.setText(studentVO.getDepartment());
+
+        nameEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+
+                if((keyEvent.getAction()==KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER){
+                    departmentEdit.requestFocus();
+                    return true;
+                }
+                else
+                    return false;
+            }
+        });
+
+        departmentEdit.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+
+                if((keyEvent.getAction()==KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER){
+                    modifyBtn.performClick();
+                    return true;
+                }
+                else
+                    return false;
+            }
+        });
     }
 
     @Override

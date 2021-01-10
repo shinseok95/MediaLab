@@ -26,7 +26,12 @@ public class BaseActivity  extends AppCompatActivity implements BaseContract.Vie
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        StyleableToast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG, R.style.importanttoast).show();
+                    }
+                });
             }
         });
     }
@@ -37,16 +42,6 @@ public class BaseActivity  extends AppCompatActivity implements BaseContract.Vie
             @Override
             public void run() {
                 StyleableToast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG, R.style.warningtoast).show();
-            }
-        });
-    }
-
-    @Override
-    public void showImportantToast(final String msg) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                StyleableToast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG, R.style.importanttoast).show();
             }
         });
     }

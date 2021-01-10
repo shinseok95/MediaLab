@@ -22,9 +22,16 @@ public class BasePresenter {
     private final int idEndIdx = 18;
     private final int dateBeginIdx = 18;
     private final int dateEndIdx = 26;
+    private final int hourBeginIdx =26;
+    private final int hourEndIdx =28;
+    private final int minuteBeginIdx =28;
+    private final int minuteEndIdx =30;
+    private final int secondBeginIdx =30;
+    private final int secondEndIdx =32;
+
     private final String authenticationCode="_KW";
 
-    protected String[] memBerColumns = new String[] {"studentId","name","department","warning","manager","warningReason"};
+    protected String[] memBerColumns = new String[] {"studentId","name","department","warning","warningReason"};
     protected String[] visitorColumns = new String[] {"_id","name","studentId","department","purpose","computerNumber","entranceTime","exitTime"};
 
     protected DBManageService dBManager =null;
@@ -42,11 +49,27 @@ public class BasePresenter {
             return false;
     }
 
+    protected boolean isRecentlyQR(String scanTime){
+
+        calendar = Calendar.getInstance();
+        String parsedScanTime = scanTime.replaceAll(":","");
+        String currentTime = dateFormat.format(calendar.getTime()).replaceAll(":","");
+
+        int integerScanTime = Integer.valueOf(parsedScanTime);
+        int integerCurrentTime = Integer.valueOf(currentTime);
+
+        if(integerCurrentTime - integerScanTime < 100)
+            return true;
+        else
+            return false;
+    }
+
     protected StudentVO scanDataParsing(String scanData){
 
         int studentID = Integer.parseInt(scanData.substring(idBeginIdx,idEndIdx));
         String accessDate = scanData.substring(dateBeginIdx,dateEndIdx);
-        StudentVO studentVO = new StudentVO(studentID,accessDate);
+        String entranceTime = scanData.substring(hourBeginIdx,hourEndIdx) +':'+scanData.substring(minuteBeginIdx,minuteEndIdx)+':'+scanData.substring(secondBeginIdx,secondEndIdx);
+        StudentVO studentVO = new StudentVO(studentID,accessDate,entranceTime);
 
         return studentVO;
     }
@@ -75,16 +98,6 @@ public class BasePresenter {
             return false;
     }
 
-    boolean isManager(StudentVO studentVO){
-
-        Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
-
-        if(memberCursor.moveToFirst() && memberCursor.getInt(4)==1)
-            return true;
-        else
-            return false;
-    }
-
     boolean isExitRequest(StudentVO studentVO){
 
         String exitTime;
@@ -107,7 +120,7 @@ public class BasePresenter {
             return false;
     }
 
-    boolean isWarningMember(StudentVO studentVO){
+    public boolean isWarningMember(StudentVO studentVO){
 
         Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
 

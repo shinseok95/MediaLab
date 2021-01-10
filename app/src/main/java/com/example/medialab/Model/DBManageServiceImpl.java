@@ -4,6 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 public class DBManageServiceImpl implements DBManageService {
 
     StudentDAO studentDAO;
@@ -64,8 +68,15 @@ public class DBManageServiceImpl implements DBManageService {
         studentDAO.updateVisitorTable(accessDate);
     }
 
+    public void changeVisitorTable(String accessDate){studentDAO.changeVisitorTable(accessDate);}
+
     @Override
     public void close() {
         studentDAO.close();
+    }
+
+    @Override
+    public boolean isTableExist(String date) {
+        return studentDAO.isTableExist(date);
     }
 }

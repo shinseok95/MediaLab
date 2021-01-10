@@ -5,8 +5,6 @@ import android.content.ContentValues;
 import com.example.medialab.Model.DBManageServiceImpl;
 import com.example.medialab.Model.StudentVO;
 
-import java.util.Calendar;
-
 public class AccessPresenter extends BasePresenter implements AccessContract.Presenter{
 
     AccessContract.View view;
@@ -31,10 +29,6 @@ public class AccessPresenter extends BasePresenter implements AccessContract.Pre
             dBManager.updateVisitorTable(studentVO.getAccessDay());
 
         long isSuccess;
-        calendar = Calendar.getInstance();
-        String entranceTime = dateFormat.format(calendar.getTime());
-
-        studentVO.setEntranceTime(entranceTime);
 
         ContentValues addRowValue = new ContentValues();
         addRowValue.put("name", studentVO.getName());

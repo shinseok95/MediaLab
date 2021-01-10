@@ -33,7 +33,7 @@ public class SignUpPresenter extends BasePresenter implements SignUpContract.Pre
         addRowValue.put("name", studentVO.getName());
         addRowValue.put("department", studentVO.getDepartment());
         addRowValue.put("warning", 0);
-        addRowValue.put("manager",0);
+        addRowValue.put("warningReason","");
 
         long isSuccess = dBManager.registerMember(addRowValue);
 

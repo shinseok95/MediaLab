@@ -38,7 +38,7 @@ public class OptPresenter extends BasePresenter implements OptContract.Presenter
         String originalPassword = mPref.getString("PASSWORD","0000");
 
         if(originalPassword.equals(otp)) {
-            view.showImportantToast("관리자 모드로 전환되었습니다.");
+            view.showToast("관리자 모드로 전환되었습니다.");
             view.moveToCalledActivity(RESULT_OK);
         }
     }
@@ -52,7 +52,7 @@ public class OptPresenter extends BasePresenter implements OptContract.Presenter
 
             if(originalPassword.equals(otp)) {
 
-                view.showImportantToast("동일한 OTP입니다.");
+                view.showToast("동일한 OTP입니다.");
                 view.moveToCalledActivity(RESULT_OK);
             }else
                 password = otp;
@@ -66,7 +66,7 @@ public class OptPresenter extends BasePresenter implements OptContract.Presenter
                 prefEditor.putString("PASSWORD",password);
                 prefEditor.apply();
 
-                view.showImportantToast("OTP가 변경되었습니다.");
+                view.showToast("OTP가 변경되었습니다.");
                 view.moveToCalledActivity(RESULT_OK);
             }
             password=null;

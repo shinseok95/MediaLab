@@ -14,6 +14,8 @@ public class StudentVO implements Serializable {
     private String exitTime;
     private String purpose;
     private String computerNumber;
+    private boolean warning;
+    private String warningReason;
 
     public StudentVO(){}
 
@@ -24,6 +26,8 @@ public class StudentVO implements Serializable {
         this.accessDay = accessTime;
         this.entranceTime = entranceTime;
         this.exitTime = exitTime;
+        this.warning=false;
+        this.warningReason="";
     }
 
     public StudentVO(String name, int studentId, String accessTime){
@@ -33,6 +37,11 @@ public class StudentVO implements Serializable {
     public StudentVO(int studentId, String accessTime){
         this(null,studentId,null,accessTime,null,null);
     }
+
+    public StudentVO(int studentId, String accessTime,String entranceTime){
+        this(null,studentId,null,accessTime,entranceTime,null);
+    }
+
 
     public String getName(){
         return name;
@@ -66,6 +75,12 @@ public class StudentVO implements Serializable {
         return computerNumber;
     }
 
+    public boolean getWarning(){
+        return warning;
+    }
+
+    public String getWarningReason(){return warningReason;}
+
     public void setName(String name){
         this.name = name;
     }
@@ -97,6 +112,11 @@ public class StudentVO implements Serializable {
     public void setComputerNumber(String computerNumber){
         this.computerNumber = computerNumber;
     }
+
+    public void setWarning(boolean warning) {this.warning = warning;}
+
+    public void setWarningReason(String warningPurpose) {this.warningReason = warningPurpose;}
+
     @NonNull
     @Override
     public String toString() {
