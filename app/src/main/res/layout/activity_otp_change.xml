@@ -15,7 +15,7 @@
         android:layout_marginTop="100dp"
         android:textColor="@android:color/white"
         android:textSize="25dp"
-        android:text="OTP Change"
+        android:text="Code Change"
         android:fontFamily="@font/nanumgothicextrabold"/>
 
 

@@ -115,6 +115,20 @@ public class ExcelDownloadPresenter extends BasePresenter implements ExcelDownlo
         return xls;
     }
 
+    @Override
+    public void deleteTableRequest(String accessDate) {
+
+        if(!dBManager.isTableExist(accessDate)){
+            view.showToast("해당 날짜의 데이터가 존재하지 않습니다.\n날짜를 다시 확인해주세요.");
+            return;
+        }
+
+        if(!dBManager.isDateUpdate(accessDate))
+            dBManager.changeVisitorTable(accessDate);
+
+        dBManager.deleteVisitorTable(accessDate);
+    }
+
     /*--------------------------View 관련 메소드--------------------------*/
 
     @Override

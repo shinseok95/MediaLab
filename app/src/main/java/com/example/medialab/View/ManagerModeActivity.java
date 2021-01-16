@@ -42,6 +42,7 @@ public class ManagerModeActivity extends BaseActivity implements ManagerModeCont
                 break;
 
             case R.id.managerModeVisitorSearchID:
+                managerModePresenter.moveToVisitorSearchActivity();
                 break;
 
             case R.id.managerModePasswordSettingID:
@@ -72,7 +73,7 @@ public class ManagerModeActivity extends BaseActivity implements ManagerModeCont
                 break;
 
             case VISITOR_SEARCH_ACTIVITY_REQUEST_CODE:
-                intent = new Intent(this, SearchActivity.class);
+                intent = new Intent(this, CurrentUserActivity.class);
                 startActivityForResult(intent, requestCode);
                 break;
 

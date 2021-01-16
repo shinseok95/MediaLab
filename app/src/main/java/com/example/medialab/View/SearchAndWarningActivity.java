@@ -123,6 +123,7 @@ public class SearchAndWarningActivity extends BaseActivity implements SearchAndW
 
             warningEdit.setVisibility(View.GONE);
             warningText.setVisibility(View.GONE);
+            warningText.setSelected(false);
 
             nameLayout.setVisibility(View.GONE);
             departmentLayout.setVisibility(View.GONE);
@@ -136,6 +137,7 @@ public class SearchAndWarningActivity extends BaseActivity implements SearchAndW
             if(searchAndWarningPresenter.isWarningMember(studentVO)){
                 searchAndWarningBtn.setText("경고해제");
                 warningText.setVisibility(View.VISIBLE);
+                warningText.setSelected(true);
 
             }else{
                 searchAndWarningBtn.setText("경고등록");
@@ -156,6 +158,7 @@ public class SearchAndWarningActivity extends BaseActivity implements SearchAndW
             if(studentVO.getWarning()) {
                 warningText.setText(studentVO.getWarningReason());
                 warningText.setVisibility(View.VISIBLE);
+                warningText.setSelected(true);
             }
 
             nameLayout.setVisibility(View.VISIBLE);

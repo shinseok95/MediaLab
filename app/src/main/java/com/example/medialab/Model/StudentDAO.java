@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -201,6 +202,16 @@ public class StudentDAO extends SQLiteOpenHelper {
         );
     }
 
+    public void deleteVisitorTable(String accessDate){
+
+        String parsingDate = '_'+accessDate;
+        TABLE_TODAY_VISITOR_LIST = parsingDate;
+
+        getWritableDatabase().execSQL(
+                "DROP TABLE IF EXISTS "+ TABLE_TODAY_VISITOR_LIST +";"
+        );
+    }
+
     public void changeVisitorTable(String accessDate){
 
         String parsingDate = '_'+accessDate;
@@ -211,14 +222,16 @@ public class StudentDAO extends SQLiteOpenHelper {
 
         String parsingDate = '_'+date;
         String query = "SELECT DISTINCT tbl_name from sqlite_master where tbl_name = '"+parsingDate+"'";
+
         try (Cursor cursor = getReadableDatabase().rawQuery(query, null)) {
             if(cursor!=null) {
-                if(cursor.getCount()>0) {
+                if(cursor.getCount()>0)
                     return true;
-                }
             }
-            return false;
+        }catch (Exception e){
+            Log.d("isTableExist",e.getMessage());
         }
+        return false;
     }
 
     public void close(){

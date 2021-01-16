@@ -2,6 +2,7 @@ package com.example.medialab.Presenter;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.example.medialab.Model.DBManageServiceImpl;
 import com.example.medialab.Model.StudentVO;
@@ -45,7 +46,7 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
             view.showToast("QR 코드의 인증시간이 초과하였습니다.\n새로고침을 눌러주세요.");
             return;
         }
-         */
+        */
 
         Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
 
@@ -58,7 +59,7 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
 
             //경고 멤버라면
             if(isWarningMember(studentVO)) {
-                view.showWarningToast("[경고] 입장불가\t\t\n" + "사유 : " + memberCursor.getString(5) + "\n\n" + "조교한테 문의하세요");
+                view.showWarningToast("[경고] 입장불가\t\t\n" + "사유 : " + memberCursor.getString(4) + "\n\n" + "조교한테 문의하세요");
                 return;
             }
             //오늘 첫 방문이라면

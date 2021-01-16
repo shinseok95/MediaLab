@@ -46,6 +46,21 @@ public class SearchPresenter extends BasePresenter implements SearchContract.Pre
 
     }
 
+    @Override
+    public void deleteRequest(String id) {
+
+        long isSuccess = dBManager.memberDelete("studentID="+id,null);
+
+        if(isSuccess >0) {
+            view.showToast("정보가 삭제되었습니다.");
+            view.moveToCalledActivity(RESULT_OK);
+        }
+        else {
+            view.showToast("삭제에 실패하셨습니다.");
+            view.moveToCalledActivity(RESULT_CANCELED);
+        }
+    }
+
     /*--------------------------View 관련 메소드--------------------------*/
 
     @Override

@@ -19,27 +19,27 @@ public class StudentVO implements Serializable {
 
     public StudentVO(){}
 
-    public StudentVO(String name, int studentId, String department, String accessTime, String entranceTime, String exitTime){
+    public StudentVO(String name, int studentId, String department, String accessDay, String entranceTime, String exitTime){
         this.name = name;
         this.studentId = studentId;
         this.department = department;
-        this.accessDay = accessTime;
+        this.accessDay = accessDay;
         this.entranceTime = entranceTime;
         this.exitTime = exitTime;
         this.warning=false;
         this.warningReason="";
     }
 
-    public StudentVO(String name, int studentId, String accessTime){
-        this(name,studentId,null,accessTime,null,null);
+    public StudentVO(String name, int studentId, String accessDay){
+        this(name,studentId,null,accessDay,null,null);
     }
 
-    public StudentVO(int studentId, String accessTime){
-        this(null,studentId,null,accessTime,null,null);
+    public StudentVO(int studentId, String accessDay){
+        this(null,studentId,null,accessDay,null,null);
     }
 
-    public StudentVO(int studentId, String accessTime,String entranceTime){
-        this(null,studentId,null,accessTime,entranceTime,null);
+    public StudentVO(int studentId, String accessDay,String entranceTime){
+        this(null,studentId,null,accessDay,entranceTime,null);
     }
 
 
@@ -93,8 +93,8 @@ public class StudentVO implements Serializable {
         this.department = department;
     }
 
-    public void setAccessDay(String accessTime){
-        this.accessDay = accessTime;
+    public void setAccessDay(String accessDay){
+        this.accessDay = accessDay;
     }
 
     public void setEntranceTime(String entranceTime){

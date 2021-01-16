@@ -1,5 +1,6 @@
 package com.example.medialab.View;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -7,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.medialab.Model.StudentVO;
 import com.example.medialab.Presenter.SearchContract;
@@ -66,6 +69,23 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
                         modifyStatus = setModifyStatus(true);
                 }else
                     modifyStatus = setModifyStatus(false);
+                break;
+
+                case R.id.deleteBtnID:
+
+                    new AlertDialog.Builder(SearchActivity.this)
+                            .setMessage("정보를 삭제하시겠습니까?")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which){
+                                    searchPresenter.deleteRequest(studentIdText.getText().toString());
+                                }
+                            })
+                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which){
+                                }
+                            })
+                            .show();
+                    break;
 
         }
     }
@@ -119,7 +139,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
         if(status){
 
             modifyStatus = false;
-            modifyBtn.setText("수정하기");
+            modifyBtn.setText("수정");
             nameEdit.setEnabled(false);
             departmentEdit.setEnabled(false);
 
@@ -128,7 +148,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
         else{
 
             modifyStatus = true;
-            modifyBtn.setText("수정완료");
+            modifyBtn.setText("완료");
             nameEdit.setEnabled(true);
             departmentEdit.setEnabled(true);
 

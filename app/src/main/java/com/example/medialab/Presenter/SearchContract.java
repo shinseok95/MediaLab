@@ -23,6 +23,8 @@ public interface SearchContract extends BaseContract {
 
         void modifyRequest(StudentVO studentVO);
 
+        void deleteRequest(String id);
+
     }
 
 }

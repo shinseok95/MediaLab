@@ -16,7 +16,7 @@ android {
 
     buildTypes {
 
-        debug{
+        debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -43,6 +43,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc03"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation files('libs/poi-4.1.2.jar')
     implementation files('libs/xmlbeans-3.1.0.jar')
 

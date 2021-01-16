@@ -41,7 +41,6 @@ public class DeveloperInfoActivity extends BaseActivity{
                 .setName("신현석")
                 .setSubTitle("광운대학교 소프트웨어학부")
                 .setBrief("문의하실 부분은\n"+"Instagram DM을 통해 연락주세요.")
-                .setAppIcon(R.drawable.media_icon)
                 .setAppName(R.string.app_name)
                 .addInstagramLink("shin__seok")
                 .addGitHubLink("shinseok95")

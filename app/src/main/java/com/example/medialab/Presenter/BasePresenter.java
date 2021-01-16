@@ -1,6 +1,7 @@
 package com.example.medialab.Presenter;
 
 import android.database.Cursor;
+import android.util.Log;
 
 import com.example.medialab.Model.DBManageService;
 import com.example.medialab.Model.StudentVO;
@@ -123,7 +124,6 @@ public class BasePresenter {
     public boolean isWarningMember(StudentVO studentVO){
 
         Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
-
         if(memberCursor.moveToFirst() && memberCursor.getInt(3)==1)
             return true;
         else
@@ -146,6 +146,13 @@ public class BasePresenter {
         }
         else
             return -1;
+    }
+
+    public String getTodayDate(){
+
+        SimpleDateFormat todayDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Calendar calendar = Calendar.getInstance();
+        return todayDateFormat.format(calendar.getTime());
     }
 
     protected String getAuthenticationCode(){

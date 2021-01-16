@@ -68,6 +68,11 @@ public class DBManageServiceImpl implements DBManageService {
         studentDAO.updateVisitorTable(accessDate);
     }
 
+    @Override
+    public void deleteVisitorTable(String accessDate) {
+        studentDAO.deleteVisitorTable(accessDate);
+    }
+
     public void changeVisitorTable(String accessDate){studentDAO.changeVisitorTable(accessDate);}
 
     @Override

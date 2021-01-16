@@ -41,11 +41,15 @@ public class ExcelDownloadActivity extends BaseActivity implements ExcelDownload
         dateEdit = (EditText)findViewById(R.id.dateEditID);
         downloadBtn = (Button)findViewById(R.id.downloadBtnID);
 
+        dateEdit.setHint(excelDownloadPresenter.getTodayDate());
+        dateEdit.setText(excelDownloadPresenter.getTodayDate());
+
         dateEdit.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
 
                 if((keyEvent.getAction()==KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER){
+
                     downloadBtn.performClick();
                     return true;
                 }
@@ -77,6 +81,7 @@ public class ExcelDownloadActivity extends BaseActivity implements ExcelDownload
         if(xls==null){
             dateEdit.setText("");
             dateEdit.requestFocus();
+            return;
         }
 
 
@@ -94,8 +99,10 @@ public class ExcelDownloadActivity extends BaseActivity implements ExcelDownload
         intent.putExtra(Intent.EXTRA_STREAM, contentUri);
         startActivity(Intent.createChooser(intent,"EXCEL_SHARE"));
 
+        excelDownloadPresenter.deleteTableRequest(dateEdit.getText().toString());
         dateEdit.setText("");
         dateEdit.requestFocus();
+
     }
 
     public void onClick(View view) {
