@@ -9,11 +9,15 @@ import com.example.medialab.R;
 import com.mukesh.OnOtpCompletionListener;
 import com.mukesh.OtpView;
 
+/** 관리자 모드에 접근하기 위한 validation check Activity입니다.
+ */
+
 public class OtpActivity extends BaseActivity implements OptContract.View{
 
     private OtpView otpView;
     private OptPresenter optPresenter = null;
     private int count;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +25,14 @@ public class OtpActivity extends BaseActivity implements OptContract.View{
 
         optPresenter = new OptPresenter(this,getSharedPreferences("Manager",Context.MODE_PRIVATE));
         init();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        optPresenter.releaseView();
+        optPresenter=null;
+        otpView=null;
     }
 
     private void init(){
@@ -40,10 +52,4 @@ public class OtpActivity extends BaseActivity implements OptContract.View{
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        optPresenter.releaseView();
-        optPresenter=null;
-    }
 }

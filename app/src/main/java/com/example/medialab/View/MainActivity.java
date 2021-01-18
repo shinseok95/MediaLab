@@ -19,6 +19,12 @@ import com.example.medialab.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+/** 메인 엑티비티로써, 모든 사용자가 접근 가능한 Activity입니다.
+ *
+ *  qr스캔, 정보 조회, 정보 등록 엑티비티로 이동하기 위해서는 qr로 본인을 인증해야 합니다.
+ *  또한, 관리자모드로 접근하기 위해서는 관리자만 알고 있는 code를 입력해야 합니다.
+ */
+
 public class MainActivity extends BaseActivity implements MainContract.View {
 
     private final int ACCESS_QR_SCAN_REQUEST_CODE = 1;
@@ -26,8 +32,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     private final int SEARCH_QR_SCAN_REQUEST_CODE = 3;
 
     private long mExitModeTime = 0L;
-
-    MainPresenter mainPresenter;
+    private MainPresenter mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,14 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
         mainPresenter = new MainPresenter(this);
         setActionBar("");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mainPresenter.releaseView();
+        mainPresenter = null;
     }
 
     @Override
@@ -172,8 +185,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         actionBar.setDisplayHomeAsUpEnabled(false);
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -215,15 +226,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
             mExitModeTime = SystemClock.uptimeMillis();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        mainPresenter.dbClose();
-        mainPresenter.releaseView();
-        mainPresenter = null;
     }
 
 }

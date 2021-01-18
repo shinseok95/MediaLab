@@ -4,13 +4,15 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.medialab.Presenter.BaseContract;
 import com.example.medialab.R;
 import com.muddzdev.styleabletoast.StyleableToast;
+
+/** 공통된 기능을 모아놓은 Activity입니다.
+ *
+ */
 
 public class BaseActivity  extends AppCompatActivity implements BaseContract.View  {
 
@@ -21,6 +23,7 @@ public class BaseActivity  extends AppCompatActivity implements BaseContract.Vie
     protected final int DEVELOPER_INFO_ACTIVITY_REQUEST_CODE = 1004;
     protected final int OTP_ACTIVITY_REQUEST_CODE = 1005;
 
+    // 기본 toast(blue)
     @Override
     public void showToast(final String msg) {
         runOnUiThread(new Runnable() {
@@ -36,6 +39,7 @@ public class BaseActivity  extends AppCompatActivity implements BaseContract.Vie
         });
     }
 
+    // 경고 toast(red)
     @Override
     public void showWarningToast(final String msg) {
         runOnUiThread(new Runnable() {
@@ -51,6 +55,7 @@ public class BaseActivity  extends AppCompatActivity implements BaseContract.Vie
         return getApplicationContext();
     }
 
+    // 모든 작업을 마치고 호출한 activity로 돌아가는 메소드
     @Override
     public void moveToCalledActivity(int resultCode){
 

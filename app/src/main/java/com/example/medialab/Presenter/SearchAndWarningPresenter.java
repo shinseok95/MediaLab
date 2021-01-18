@@ -2,15 +2,14 @@ package com.example.medialab.Presenter;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.example.medialab.Model.DBManageServiceImpl;
 import com.example.medialab.Model.StudentVO;
 
-import java.util.Calendar;
-
 public class SearchAndWarningPresenter extends BasePresenter implements SearchAndWarningContract.Presenter {
 
-    SearchAndWarningContract.View view;
+    private SearchAndWarningContract.View view;
 
     private SearchAndWarningPresenter(){
         super();
@@ -21,8 +20,15 @@ public class SearchAndWarningPresenter extends BasePresenter implements SearchAn
         dBManager = new DBManageServiceImpl(view.getInstanceContext());
     }
 
+    // 학생 정보 조회 메소드
     @Override
     public StudentVO memberSearchRequest(String studentID){
+
+        boolean isMemberTableExist = dBManager.isMemberTableExist();
+
+        if(!isMemberTableExist){
+            dBManager.updateMemberTable();
+        }
 
         StudentVO studentVO = new StudentVO();
         Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentID,null,null,null,null);
@@ -39,16 +45,23 @@ public class SearchAndWarningPresenter extends BasePresenter implements SearchAn
 
             studentVO.setWarningReason(memberCursor.getString(4));
 
+            memberCursor.close();
             return studentVO;
         }
-
         else
             return null;
-
     }
 
+
+    // 경고 등록 및 해제 메소드
     @Override
     public boolean setWarningRequest(StudentVO studentVO){
+
+        boolean isMemberTableExist = dBManager.isMemberTableExist();
+
+        if(!isMemberTableExist){
+            dBManager.updateMemberTable();
+        }
 
         ContentValues addRowValue = new ContentValues();
 
@@ -64,15 +77,18 @@ public class SearchAndWarningPresenter extends BasePresenter implements SearchAn
 
         if(isSuccess >0) {
 
-            if(studentVO.getWarning())
+            if(studentVO.getWarning()) {
+                Log.v("Search and warning presenter","경고 해제");
                 view.showToast(studentVO + " : 경고해제");
-
-            else
+            }
+            else {
+                Log.v("Search and warning presenter","경고 등록");
                 view.showToast(studentVO + " : 경고등록");
-
+            }
             return true;
         }
         else {
+            Log.v("Search and warning presenter","경고 실패");
             view.showToast("경고에 실패하셨습니다.");
             return false;
         }

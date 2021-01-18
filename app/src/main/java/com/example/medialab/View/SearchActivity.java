@@ -16,17 +16,21 @@ import com.example.medialab.Presenter.SearchContract;
 import com.example.medialab.Presenter.SearchPresenter;
 import com.example.medialab.R;
 
+/** 사용자가 본인의 정보를 조회, 수정, 삭제할 수 있는 Activity입니다.
+ *
+ */
+
 public class SearchActivity extends BaseActivity implements SearchContract.View {
 
-    EditText nameEdit;
-    TextView studentIdText;
-    EditText departmentEdit;
-    Button modifyBtn;
+    private EditText nameEdit;
+    private TextView studentIdText;
+    private EditText departmentEdit;
+    private Button modifyBtn;
 
-    StudentVO studentVO;
-    SearchPresenter searchPresenter;
+    private StudentVO studentVO;
+    private SearchPresenter searchPresenter;
+    private boolean modifyStatus = false;
 
-    boolean modifyStatus = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,15 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
 
         searchPresenter = new SearchPresenter(this);
         init();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        searchPresenter.releaseView();
+        searchPresenter=null;
+        studentVO=null;
     }
 
     public void onClick(View view) {
@@ -133,6 +146,7 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
         });
     }
 
+    // 수정 상태를 변경하는 메소드 (true : 수정 중인 상태 / false : 수정 전 상태)
     @Override
     public boolean setModifyStatus(boolean status) {
 
@@ -155,6 +169,8 @@ public class SearchActivity extends BaseActivity implements SearchContract.View 
             return true;
         }
     }
+
+    /*-------------------------유효성 체크 메소드-------------------------*/
 
     @Override
     public boolean isNameFilled() {

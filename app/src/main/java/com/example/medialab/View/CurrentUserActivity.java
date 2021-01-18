@@ -21,16 +21,20 @@ import com.example.medialab.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/** 현재 랩실을 사용하고 있는 학생 리스트를 보여주는 Activity입니다.
+ *
+ *  Presenter에게 당일 사용자 중 퇴장 시간을 입력하지 않은 학생들의 리스트를 요청합니다.
+ *  퇴장시 스캔하지 않은 학생을 확인한다면, 해당 학생의 view를 클릭하여 경고를 줄 수 있습니다.
+ */
+
 public class CurrentUserActivity extends BaseActivity implements CurrentUserContract.View {
 
-    protected final int MEMBER_SEARCH_ACTIVITY_REQUEST_CODE = 1007;
-
-    CurrentUserPresenter currentUserPresenter;
-    ArrayList<StudentVO> studentList = null;
-    RecyclerView recyclerView;
-    SwipeRefreshLayout swipeRefreshLayout;
-    DividerItemDecoration dividerItemDecoration=null;
-    CurrentUserAdapter currentUserAdapter=null;
+    private CurrentUserPresenter currentUserPresenter = null;
+    private ArrayList<StudentVO> studentList = null;
+    private RecyclerView recyclerView = null;
+    private SwipeRefreshLayout swipeRefreshLayout = null;
+    private DividerItemDecoration dividerItemDecoration=null;
+    private CurrentUserAdapter currentUserAdapter=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +45,24 @@ public class CurrentUserActivity extends BaseActivity implements CurrentUserCont
         init();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        studentList= null;
+        recyclerView = null;
+        swipeRefreshLayout=null;
+        dividerItemDecoration=null;
+        currentUserAdapter=null;
+        currentUserPresenter.releaseView();
+        currentUserPresenter = null;
+    }
+
     public void init() {
 
         setActionBar("현재 사용자");
 
+        // Recyclerview refresh 설정
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeColors(Color.rgb(0,113,185));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -56,15 +74,18 @@ public class CurrentUserActivity extends BaseActivity implements CurrentUserCont
             }
         });
 
+        // Recyclerview 설정
         recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Recyclerview 밑줄 설정
         dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(this).getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         studentList = currentUserPresenter.studentListRequest();
         currentUserAdapter = new CurrentUserAdapter(studentList);
 
+        // 클릭시 경고 등록 메소드
         currentUserAdapter.setOnItemClickListener(new CurrentUserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {

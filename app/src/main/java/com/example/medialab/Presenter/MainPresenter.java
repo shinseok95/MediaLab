@@ -18,7 +18,7 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
     protected final int DEVELOPER_INFO_ACTIVITY_REQUEST_CODE = 1004;
     protected final int OTP_ACTIVITY_REQUEST_CODE = 1005;
 
-    MainContract.View view = null;
+    private MainContract.View view = null;
 
     private MainPresenter(){
         super();
@@ -39,7 +39,7 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
             return;
         }
 
-        StudentVO studentVO = scanDataParsing(scanData); // QR 데이터 파싱
+        StudentVO studentVO = scanDataParsing(scanData);
 
         /*
         if(!isRecentlyQR(studentVO.getEntranceTime())){
@@ -47,6 +47,17 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
             return;
         }
         */
+
+        boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
+        boolean isVisitorTableExist = dBManager.isVisitorTableExist(studentVO.getAccessDay());
+        boolean isMemberTableExist = dBManager.isMemberTableExist();
+
+        if(!isDateUpdate || !isVisitorTableExist)
+            dBManager.updateVisitorTable(studentVO.getAccessDay());
+
+        if(!isMemberTableExist){
+            dBManager.updateMemberTable();
+        }
 
         Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
 
@@ -59,20 +70,24 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
 
             //경고 멤버라면
             if(isWarningMember(studentVO)) {
+                Log.v("Main presenter",studentVO.toString()+" : 경고로 인한 접근 제한");
                 view.showWarningToast("[경고] 입장불가\t\t\n" + "사유 : " + memberCursor.getString(4) + "\n\n" + "조교한테 문의하세요");
+                memberCursor.close();
                 return;
             }
             //오늘 첫 방문이라면
-            if(isFirstVisit(studentVO))
-                view.moveToAnotherActivity(studentVO,ACCESS_ACTIVITY_REQUEST_CODE);
-
+            if(isFirstVisit(studentVO)) {
+                memberCursor.close();
+                view.moveToAnotherActivity(studentVO, ACCESS_ACTIVITY_REQUEST_CODE);
+            }
             //오늘 첫 방문이 아니라면
             else{
 
                 // 입장을 요청하는 경우
-                if(!isExitRequest(studentVO))
-                    view.moveToAnotherActivity(studentVO,ACCESS_ACTIVITY_REQUEST_CODE);
-
+                if(!isExitRequest(studentVO)) {
+                    memberCursor.close();
+                    view.moveToAnotherActivity(studentVO, ACCESS_ACTIVITY_REQUEST_CODE);
+                }
                 // 퇴장을 요청하는 경우
                 else{
                     calendar = Calendar.getInstance();
@@ -82,13 +97,18 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
                     updateRowValue.put("exitTime", exitTime);
                     dBManager.visitorUpdate(updateRowValue,"studentID="+ studentVO.getStudentId()+" AND _id="+getVisitSequenceID(studentVO),null);
                     view.showToast(studentVO + " 퇴장("+exitTime+")");
+
+                    Log.v("Main presenter",studentVO.toString()+" : 퇴장");
+                    memberCursor.close();
                 }
             }
         }
 
         // 기존 멤버가 아니라면 -> Toast
-        else
+        else {
+             memberCursor.close();
              view.showToast("정보를 등록해주세요");
+         }
     }
 
     @Override
@@ -107,6 +127,12 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
             return;
         }
          */
+
+        boolean isMemberTableExist = dBManager.isMemberTableExist();
+
+        if(!isMemberTableExist){
+            dBManager.updateMemberTable();
+        }
 
         // 기존 멤버라면 -> Toast
         if(isMember(studentVO))
@@ -133,6 +159,12 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
 
         StudentVO studentVO = scanDataParsing(scanData); // QR 데이터 파싱
 
+        boolean isMemberTableExist = dBManager.isMemberTableExist();
+
+        if(!isMemberTableExist){
+            dBManager.updateMemberTable();
+        }
+
         Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
 
         if(memberCursor.moveToFirst()){
@@ -141,12 +173,15 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
             studentVO.setName(memberCursor.getString(1));
             studentVO.setDepartment(memberCursor.getString(2));
 
+            memberCursor.close();
             view.moveToAnotherActivity(studentVO,SEARCH_ACTIVITY_REQUEST_CODE);
         }
 
         // 기존 멤버가 아니라면 -> Toast
-        else
+        else {
+            memberCursor.close();
             view.showToast("정보를 등록해주세요");
+        }
     }
 
     @Override
@@ -174,5 +209,6 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
     @Override
     public void releaseView() {
         this.view = null;
+        dbClose();
     }
 }

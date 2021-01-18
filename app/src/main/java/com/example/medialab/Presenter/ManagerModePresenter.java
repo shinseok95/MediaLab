@@ -7,7 +7,7 @@ public class ManagerModePresenter extends BasePresenter implements ManagerModeCo
     protected final int VISITOR_SEARCH_ACTIVITY_REQUEST_CODE = 1008;
     protected final int OTP_CHANGE_ACTIVITY_REQUEST_CODE = 1009;
 
-    ManagerModeContract.View view = null;
+    private ManagerModeContract.View view = null;
 
     private ManagerModePresenter(){
         super();

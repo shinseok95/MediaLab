@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-
-import com.example.medialab.Model.StudentVO;
 import com.example.medialab.Presenter.ManagerModeContract;
 import com.example.medialab.Presenter.ManagerModePresenter;
 import com.example.medialab.R;
+
+/** 관리자에게 제공되는 기능들을 보여주는 Activity입니다.
+ *
+ * 엑셀 관리, 학생 정보 조회, 현재 사용자 조회, Code 변경의 기능이 제공됩니다.
+ */
 
 public class ManagerModeActivity extends BaseActivity implements ManagerModeContract.View {
 
@@ -27,6 +30,13 @@ public class ManagerModeActivity extends BaseActivity implements ManagerModeCont
 
         managerModePresenter = new ManagerModePresenter(this);
         init();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        managerModePresenter.releaseView();
+        managerModePresenter=null;
     }
 
     public void onClick(View view) {

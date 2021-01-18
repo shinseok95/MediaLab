@@ -12,8 +12,8 @@ import java.util.Calendar;
 
 public class StudentDAO extends SQLiteOpenHelper {
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("_yyyyMMdd");
-    Calendar calendar = Calendar.getInstance();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("_yyyyMMdd");
+    private Calendar calendar = Calendar.getInstance();
 
     private static final String FILE_NAME = "EntryList.db";
     private static final String TABLE_MEMBER= "Member";
@@ -23,6 +23,7 @@ public class StudentDAO extends SQLiteOpenHelper {
     private Context mContext = null;
     private static StudentDAO mStudentDAO = null;
 
+    // 싱글톤으로 객체 생성
     public static StudentDAO getInstance(Context context){
 
         if(mStudentDAO ==null) {
@@ -83,8 +84,6 @@ public class StudentDAO extends SQLiteOpenHelper {
                         "exitTime TEXT );"
 
         );
-
-        // 일단 비워둠
         super.onOpen(sqLiteDatabase);
     }
 
@@ -187,19 +186,43 @@ public class StudentDAO extends SQLiteOpenHelper {
         String parsingDate = '_'+accessDate;
         TABLE_TODAY_VISITOR_LIST =parsingDate;
 
-        getWritableDatabase().execSQL(
+        try {
+            getWritableDatabase().execSQL(
 
-                "CREATE TABLE IF NOT EXISTS "+ TABLE_TODAY_VISITOR_LIST +
-                        "(" + "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        "name TEXT, "+
-                        "studentId INTEGER, "+
-                        "department TEXT, "+
-                        "purpose TEXT, "+
-                        "computerNumber TEXT, "+
-                        "entranceTime TEXT, "+
-                        "exitTime TEXT );"
+                    "CREATE TABLE IF NOT EXISTS " + TABLE_TODAY_VISITOR_LIST +
+                            "(" + "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                            "name TEXT, " +
+                            "studentId INTEGER, " +
+                            "department TEXT, " +
+                            "purpose TEXT, " +
+                            "computerNumber TEXT, " +
+                            "entranceTime TEXT, " +
+                            "exitTime TEXT );"
 
-        );
+            );
+            Log.v("StudentDAO","Visitor 테이블 수정 성공 : "+parsingDate);
+        }catch (Exception e){
+            Log.e("StudentDAO","Visitor 테이블 수정 실패 : "+parsingDate);
+        }
+    }
+
+    public void updateMemberTable(){
+
+        try {
+            getWritableDatabase().execSQL(
+
+                    "CREATE TABLE IF NOT EXISTS "+ TABLE_MEMBER +
+                            "(" + "studentId INTEGER PRIMARY KEY, " +
+                            "name TEXT, "+
+                            "department TEXT, "+
+                            "warning INTEGER, "+
+                            "warningReason TEXT);"
+
+            );
+            Log.v("StudentDAO","Member 테이블 수정 성공 : ");
+        }catch (Exception e){
+            Log.e("StudentDAO","Member 테이블 수정 실패 : ");
+        }
     }
 
     public void deleteVisitorTable(String accessDate){
@@ -207,9 +230,14 @@ public class StudentDAO extends SQLiteOpenHelper {
         String parsingDate = '_'+accessDate;
         TABLE_TODAY_VISITOR_LIST = parsingDate;
 
-        getWritableDatabase().execSQL(
-                "DROP TABLE IF EXISTS "+ TABLE_TODAY_VISITOR_LIST +";"
-        );
+        try {
+            getWritableDatabase().execSQL(
+                    "DROP TABLE IF EXISTS " + TABLE_TODAY_VISITOR_LIST + ";"
+            );
+            Log.v("StudentDAO","Visitor 테이블 삭제 성공 : "+parsingDate);
+        }catch (Exception e){
+            Log.e("StudentDAO","Visitor 테이블 삭제 실패 : "+e.getMessage());
+        }
     }
 
     public void changeVisitorTable(String accessDate){
@@ -218,18 +246,37 @@ public class StudentDAO extends SQLiteOpenHelper {
         TABLE_TODAY_VISITOR_LIST =parsingDate;
     }
 
-    public boolean isTableExist(String date){
+    public boolean isVisitorTableExist(String date){
 
         String parsingDate = '_'+date;
         String query = "SELECT DISTINCT tbl_name from sqlite_master where tbl_name = '"+parsingDate+"'";
 
         try (Cursor cursor = getReadableDatabase().rawQuery(query, null)) {
             if(cursor!=null) {
-                if(cursor.getCount()>0)
+                if(cursor.getCount()>0) {
+                    cursor.close();
                     return true;
+                }
             }
         }catch (Exception e){
-            Log.d("isTableExist",e.getMessage());
+            Log.e("StudentDAO","Visitor 테이블 조회 실패 : "+e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean isMemberTableExist(){
+
+        String query = "SELECT DISTINCT tbl_name from sqlite_master where tbl_name = '"+TABLE_MEMBER+"'";
+
+        try (Cursor cursor = getReadableDatabase().rawQuery(query, null)) {
+            if(cursor!=null) {
+                if(cursor.getCount()>0) {
+                    cursor.close();
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            Log.e("StudentDAO","Member 테이블 조회 실패 : "+e.getMessage());
         }
         return false;
     }

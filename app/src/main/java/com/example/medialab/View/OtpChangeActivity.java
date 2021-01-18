@@ -10,6 +10,9 @@ import com.example.medialab.R;
 import com.mukesh.OnOtpCompletionListener;
 import com.mukesh.OtpView;
 
+/** Validation code를 변경 할 수 있는 Activity입니다.
+ */
+
 public class OtpChangeActivity extends BaseActivity implements OptContract.View{
 
     TextView otpText;
@@ -25,6 +28,14 @@ public class OtpChangeActivity extends BaseActivity implements OptContract.View{
 
         optPresenter = new OptPresenter(this,getSharedPreferences("Manager", Context.MODE_PRIVATE));
         init();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        optPresenter.releaseView();
+        optPresenter=null;
+        otpView=null;
     }
 
     private void init(){
@@ -46,19 +57,12 @@ public class OtpChangeActivity extends BaseActivity implements OptContract.View{
                     }
                 }else{
                     if(!optPresenter.validateChangeRequest(otp,count)){
-                        otpText.setText("OTP가 일치하지 않습니다.");
+                        otpText.setText("Code가 일치하지 않습니다.");
                         count=0;
                     }
                 }
                 otpView.setText(null);
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        optPresenter.releaseView();
-        optPresenter=null;
     }
 }

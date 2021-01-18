@@ -19,6 +19,6 @@ public interface ExcelDownloadContract extends BaseContract {
         void releaseView();
 
         File downLoadRequest(String date);
-        void deleteTableRequest(String accessDate);
+        boolean deleteTableRequest(String accessDate);
     }
 }

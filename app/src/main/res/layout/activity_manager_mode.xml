@@ -30,7 +30,7 @@
             android:elevation="5dp"
             android:textColor="@android:color/white"
             android:backgroundTint="#0071b9"
-            android:text="엑셀저장"
+            android:text="엑셀관리"
             android:textSize="40dp"
             android:fontFamily="@font/nanumbarungothicbold"
             android:layout_marginBottom="10dp"

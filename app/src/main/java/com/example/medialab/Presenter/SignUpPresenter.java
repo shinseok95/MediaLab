@@ -1,13 +1,14 @@
 package com.example.medialab.Presenter;
 
 import android.content.ContentValues;
+import android.util.Log;
 
 import com.example.medialab.Model.DBManageServiceImpl;
 import com.example.medialab.Model.StudentVO;
 
 public class SignUpPresenter extends BasePresenter implements SignUpContract.Presenter{
 
-    SignUpContract.View view;
+    private SignUpContract.View view;
 
     private SignUpPresenter(){
         super();
@@ -20,13 +21,15 @@ public class SignUpPresenter extends BasePresenter implements SignUpContract.Pre
 
     /*-----------------------Request 관련 메소드----------------------------*/
 
+    // 학생 정보 등록 메소드
     @Override
     public void signUpRequest(StudentVO studentVO) {
 
-        boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
+        boolean isMemberTableExist = dBManager.isMemberTableExist();
 
-        if(!isDateUpdate)
-            dBManager.updateVisitorTable(studentVO.getAccessDay());
+        if(!isMemberTableExist){
+            dBManager.updateMemberTable();
+        }
 
         ContentValues addRowValue = new ContentValues();
         addRowValue.put("studentId", studentVO.getStudentId());
@@ -38,10 +41,12 @@ public class SignUpPresenter extends BasePresenter implements SignUpContract.Pre
         long isSuccess = dBManager.registerMember(addRowValue);
 
         if(isSuccess >0) {
+            Log.v("Sign up Presenter","정보 등록 성공");
             view.showToast(studentVO + " : 등록완료");
             view.moveToCalledActivity(RESULT_OK);
         }
         else {
+            Log.v("Sign up Presenter","정보 등록 실패");
             view.showToast("등록에 실패하셨습니다.");
             view.moveToCalledActivity(RESULT_CANCELED);
         }

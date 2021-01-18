@@ -37,6 +37,7 @@ public class BasePresenter {
 
     protected DBManageService dBManager =null;
 
+    // 인증된 qr인지 확인하는 메소드
     protected boolean isAuthentic(String scanData){
 
         if(scanData == null || scanData.length() < dateEndIdx)
@@ -50,11 +51,13 @@ public class BasePresenter {
             return false;
     }
 
+    // 최근 1분간 발급받은 qr인지 확인하는 메소드
     protected boolean isRecentlyQR(String scanTime){
 
         calendar = Calendar.getInstance();
         String parsedScanTime = scanTime.replaceAll(":","");
         String currentTime = dateFormat.format(calendar.getTime()).replaceAll(":","");
+        calendar=null;
 
         int integerScanTime = Integer.valueOf(parsedScanTime);
         int integerCurrentTime = Integer.valueOf(currentTime);
@@ -65,52 +68,76 @@ public class BasePresenter {
             return false;
     }
 
-    protected StudentVO scanDataParsing(String scanData){
+    // QR에서 학번과 접근 시간을 파싱하는 메소드
+    public StudentVO scanDataParsing(String scanData){
 
         int studentID = Integer.parseInt(scanData.substring(idBeginIdx,idEndIdx));
         String accessDate = scanData.substring(dateBeginIdx,dateEndIdx);
         String entranceTime = scanData.substring(hourBeginIdx,hourEndIdx) +':'+scanData.substring(minuteBeginIdx,minuteEndIdx)+':'+scanData.substring(secondBeginIdx,secondEndIdx);
+
         StudentVO studentVO = new StudentVO(studentID,accessDate,entranceTime);
 
         return studentVO;
     }
 
-    boolean isFirstVisit(StudentVO studentVO){
+    // 첫 방문인지 확인하는 메소드
+    public boolean isFirstVisit(StudentVO studentVO){
 
         boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
+        boolean isTableExist = dBManager.isVisitorTableExist(studentVO.getAccessDay());
 
-        if(!isDateUpdate)
+        if(!isDateUpdate || !isTableExist)
             dBManager.updateVisitorTable(studentVO.getAccessDay());
 
         Cursor visitorCursor = dBManager.visitorQuery(visitorColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
 
-        if (visitorCursor.moveToFirst())
+        if (visitorCursor.moveToFirst()) {
+            visitorCursor.close();
             return false;
-        else
+        }
+        else {
+            visitorCursor.close();
             return true;
+        }
     }
 
-    boolean isMember(StudentVO studentVO){
+    // 등록된 학생인지 확인하는 메소드
+    public boolean isMember(StudentVO studentVO){
+
+        boolean isMemberTableExist = dBManager.isMemberTableExist();
+
+        if(!isMemberTableExist){
+            dBManager.updateMemberTable();
+        }
+
         Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
 
-        if(memberCursor.moveToFirst())
+        if(memberCursor.moveToFirst()) {
+            memberCursor.close();
             return true;
-        else
+        }
+        else {
+            memberCursor.close();
             return false;
+        }
     }
 
-    boolean isExitRequest(StudentVO studentVO){
+    // qr 스캔시 입장을 요청하는 건지 퇴장을 요청하는 건지 확인하는 메소드
+    public boolean isExitRequest(StudentVO studentVO){
 
         String exitTime;
         boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
+        boolean isTableExist = dBManager.isVisitorTableExist(studentVO.getAccessDay());
 
-        if(!isDateUpdate)
+        if(!isDateUpdate || !isTableExist)
             dBManager.updateVisitorTable(studentVO.getAccessDay());
 
         Cursor visitorCursor = dBManager.visitorQuery(visitorColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
 
         if(visitorCursor.moveToLast()){
             exitTime = visitorCursor.getString(7);
+
+            visitorCursor.close();
 
             if(exitTime!=null)
                 return false;
@@ -121,46 +148,86 @@ public class BasePresenter {
             return false;
     }
 
+    // 경고를 받은 학생인지 확인하는 메소드(studentVO)
     public boolean isWarningMember(StudentVO studentVO){
 
+        boolean isMemberTableExist = dBManager.isMemberTableExist();
+
+        if(!isMemberTableExist){
+            dBManager.updateMemberTable();
+        }
+
         Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
-        if(memberCursor.moveToFirst() && memberCursor.getInt(3)==1)
+        if(memberCursor.moveToFirst() && memberCursor.getInt(3)==1) {
+            memberCursor.close();
             return true;
-        else
+        }
+        else {
+            memberCursor.close();
             return false;
+        }
+    }
+    // 경고를 받은 학생인지 확인하는 메소드
+    public boolean isWarningMember(String id){
+
+        boolean isMemberTableExist = dBManager.isMemberTableExist();
+
+        if(!isMemberTableExist){
+            dBManager.updateMemberTable();
+        }
+
+        Cursor memberCursor = dBManager.memberQuery(memBerColumns,"studentID="+ id,null,null,null,null);
+        if(memberCursor.moveToFirst() && memberCursor.getInt(3)==1) {
+            memberCursor.close();
+            return true;
+        }
+        else {
+            memberCursor.close();
+            return false;
+        }
     }
 
-    int getVisitSequenceID(StudentVO studentVO){
+
+
+    // 이번 입장이 오늘의 몇 번째 입장인지 확인하는 메소드
+    public int getVisitSequenceID(StudentVO studentVO){
 
         int _id;
         boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
+        boolean isTableExist = dBManager.isVisitorTableExist(studentVO.getAccessDay());
 
-        if(!isDateUpdate)
+        if(!isDateUpdate || !isTableExist)
             dBManager.updateVisitorTable(studentVO.getAccessDay());
+
 
         Cursor visitorCursor = dBManager.visitorQuery(visitorColumns,"studentID="+ studentVO.getStudentId(),null,null,null,null);
 
         if(visitorCursor.moveToLast()){
             _id = visitorCursor.getInt(0);
+            visitorCursor.close();
             return _id;
         }
-        else
+        else {
+            visitorCursor.close();
             return -1;
+        }
     }
 
-    public String getTodayDate(){
+    // 오늘 날짜를 확인하는 메소드
+    public  String getTodayDate(){
 
         SimpleDateFormat todayDateFormat = new SimpleDateFormat("yyyyMMdd");
         Calendar calendar = Calendar.getInstance();
         return todayDateFormat.format(calendar.getTime());
     }
 
+    // QR 코드에서 인증해야할 문자를 제공하는 메소드
     protected String getAuthenticationCode(){
         return authenticationCode;
     }
 
-
-    public void dbClose(){
+    protected void dbClose(){
         dBManager.close();
+        dBManager=null;
     }
 }

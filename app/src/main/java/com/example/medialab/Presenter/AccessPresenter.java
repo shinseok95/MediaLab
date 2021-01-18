@@ -1,13 +1,14 @@
 package com.example.medialab.Presenter;
 
 import android.content.ContentValues;
+import android.util.Log;
 
 import com.example.medialab.Model.DBManageServiceImpl;
 import com.example.medialab.Model.StudentVO;
 
 public class AccessPresenter extends BasePresenter implements AccessContract.Presenter{
 
-    AccessContract.View view;
+    private AccessContract.View view;
 
     private AccessPresenter(){
         super();
@@ -24,11 +25,11 @@ public class AccessPresenter extends BasePresenter implements AccessContract.Pre
     public void accessRequest(StudentVO studentVO) {
 
         boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
+        boolean isTableExist = dBManager.isVisitorTableExist(studentVO.getAccessDay());
 
-        if(!isDateUpdate)
+        if(!isDateUpdate || !isTableExist)
             dBManager.updateVisitorTable(studentVO.getAccessDay());
 
-        long isSuccess;
 
         ContentValues addRowValue = new ContentValues();
         addRowValue.put("name", studentVO.getName());
@@ -38,13 +39,15 @@ public class AccessPresenter extends BasePresenter implements AccessContract.Pre
         addRowValue.put("computerNumber", studentVO.getComputerNumber());
         addRowValue.put("entranceTime", studentVO.getEntranceTime());
 
-        isSuccess = dBManager.registerVisitor(addRowValue);
+        long isSuccess = dBManager.registerVisitor(addRowValue);
 
         if(isSuccess != -1) {
+            Log.v("Access presenter",studentVO.toString()+"입장 성공");
             view.showToast(studentVO + " 입장("+ studentVO.getEntranceTime()+")");
             view.moveToCalledActivity(RESULT_OK);
         }
         else {
+            Log.v("Access presenter",studentVO.toString()+"입장 실패");
             view.showToast("입장에 실패하였습니다.");
             view.moveToCalledActivity(RESULT_CANCELED);
         }

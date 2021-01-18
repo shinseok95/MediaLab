@@ -11,9 +11,7 @@ import java.util.ArrayList;
 
 public class CurrentUserPresenter extends BasePresenter implements CurrentUserContract.Presenter{
 
-    protected final int MEMBER_SEARCH_ACTIVITY_REQUEST_CODE = 1007;
-
-    CurrentUserContract.View view;
+    private CurrentUserContract.View view =null;
 
     private CurrentUserPresenter(){
         super();
@@ -31,9 +29,11 @@ public class CurrentUserPresenter extends BasePresenter implements CurrentUserCo
 
         ArrayList<StudentVO> studentList = new ArrayList<StudentVO>();
         String todayDate = getTodayDate();
-        boolean isDateUpdate = dBManager.isDateUpdate(todayDate);
 
-        if(!isDateUpdate)
+        boolean isDateUpdate = dBManager.isDateUpdate(todayDate);
+        boolean isTableExist = dBManager.isVisitorTableExist(todayDate);
+
+        if(!isDateUpdate || !isTableExist)
             dBManager.updateVisitorTable(todayDate);
 
         Cursor visitorCursor = dBManager.visitorQuery(visitorColumns,"exitTime IS NULL",null,null,null,null);
@@ -48,23 +48,34 @@ public class CurrentUserPresenter extends BasePresenter implements CurrentUserCo
             studentList.add(studentVO);
         }
 
+        visitorCursor.close();
+
         return studentList;
     }
 
     @Override
     public boolean setWarningRequest(StudentVO studentVO){
 
+        boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
+        boolean isVisitorTableExist = dBManager.isVisitorTableExist(studentVO.getAccessDay());
+        boolean isMemberTableExist = dBManager.isMemberTableExist();
+
+        if(!isDateUpdate || !isVisitorTableExist)
+            dBManager.updateVisitorTable(studentVO.getAccessDay());
+
+        if(!isMemberTableExist){
+            dBManager.updateMemberTable();
+        }
+
         ContentValues warningAddRowValue = new ContentValues();
         ContentValues exitAddRowValue = new ContentValues();
 
         if(studentVO.getWarning())
             warningAddRowValue.put("warning", 0);
-
         else
             warningAddRowValue.put("warning", 1);
 
         warningAddRowValue.put("warningReason",studentVO.getWarningReason());
-
         long isWarningSuccess = dBManager.memberUpdate(warningAddRowValue,"studentID="+ studentVO.getStudentId(),null);
 
         exitAddRowValue.put("exitTime","00:00:00");
@@ -72,15 +83,18 @@ public class CurrentUserPresenter extends BasePresenter implements CurrentUserCo
 
         if(isWarningSuccess >0 && isExitSuccess>0) {
 
-            if(studentVO.getWarning())
+            if(studentVO.getWarning()) {
+                Log.v("Current User Presenter",studentVO.toString()+"경고 해제");
                 view.showToast(studentVO + " : 경고해제");
-
-            else
+            }
+            else {
+                Log.v("Current User Presenter",studentVO.toString()+"경고 등록");
                 view.showToast(studentVO + " : 경고등록");
-
+            }
             return true;
         }
         else {
+            Log.v("Current User Presenter",studentVO.toString()+"경고 실패");
             view.showToast("경고에 실패하셨습니다.");
             return false;
         }

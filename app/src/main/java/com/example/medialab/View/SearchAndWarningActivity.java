@@ -17,23 +17,27 @@ import com.example.medialab.Presenter.SearchAndWarningPresenter;
 import com.example.medialab.Presenter.SearchPresenter;
 import com.example.medialab.R;
 
-
+/** 관리자가 학생의 정보를 조회, 경고 할 수 있는 Activity입니다.
+ *
+ */
 
 public class SearchAndWarningActivity extends BaseActivity implements SearchAndWarningContract.View {
 
-    EditText studentIdEdit;
-    TextView studentIdText;
-    TextView nameText;
-    TextView departmentText;
-    EditText warningEdit;
-    TextView warningText;
-    Button searchAndWarningBtn;
-    LinearLayout nameLayout;
-    LinearLayout departmentLayout;
-    LinearLayout warningLayout;
+    private TextView studentText;
+    private TextView studentSubText;
+    private EditText studentIdEdit;
+    private TextView studentIdText;
+    private TextView nameText;
+    private TextView departmentText;
+    private EditText warningEdit;
+    private TextView warningText;
+    private Button searchAndWarningBtn;
+    private LinearLayout nameLayout;
+    private LinearLayout departmentLayout;
+    private LinearLayout warningLayout;
 
-    StudentVO studentVO;
-    SearchAndWarningPresenter searchAndWarningPresenter;
+    private StudentVO studentVO;
+    private SearchAndWarningPresenter searchAndWarningPresenter;
 
     boolean warningStatus = false;
 
@@ -43,14 +47,23 @@ public class SearchAndWarningActivity extends BaseActivity implements SearchAndW
         setContentView(R.layout.activity_search_and_warning);
 
         searchAndWarningPresenter = new SearchAndWarningPresenter(this);
-
         init();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        searchAndWarningPresenter.releaseView();
+        searchAndWarningPresenter=null;
+        studentVO=null;
     }
 
     public void init(){
 
         setActionBar("정보 조회");
 
+        studentText = (TextView)findViewById(R.id.studentTextID);
+        studentSubText = (TextView)findViewById(R.id.studentSubTextID);
         studentIdEdit = (EditText)findViewById(R.id.warningStudentEditID);
         studentIdText = (TextView)findViewById(R.id.warningNameTextID);
         nameText = (TextView)findViewById(R.id.warningNameID);
@@ -79,30 +92,7 @@ public class SearchAndWarningActivity extends BaseActivity implements SearchAndW
         studentIdEdit.requestFocus();
     }
 
-    @Override
-    public boolean isStudentIDFilled(){
-
-        String studentID = studentIdEdit.getText().toString();
-        studentID = studentID.trim();
-
-        if (studentID.getBytes().length <= 0)
-            return false;
-        else
-            return true;
-    }
-
-    @Override
-    public boolean isWarningFilled() {
-
-        String warning = warningEdit.getText().toString();
-        warning = warning.trim();
-
-        if (warning.getBytes().length <= 0)
-            return false;
-        else
-            return true;
-    }
-
+    // 학생의 경고 상태에 따라서, 다른 view를 보여주는 메소드 ( true : 학번을 입력한 상태 / false : 학번을 입력하기 전 상태)
     @Override
     public boolean setWarningStatus(boolean status) {
 
@@ -117,6 +107,9 @@ public class SearchAndWarningActivity extends BaseActivity implements SearchAndW
             nameText.setText("");
             departmentText.setText("");
             warningEdit.setText("");
+
+            studentText.setVisibility(View.VISIBLE);
+            studentSubText.setVisibility(View.GONE);
 
             studentIdEdit.setVisibility(View.VISIBLE);
             studentIdText.setVisibility(View.GONE);
@@ -148,6 +141,9 @@ public class SearchAndWarningActivity extends BaseActivity implements SearchAndW
 
             studentIdText.setText(studentIdEdit.getText().toString());
 
+
+            studentText.setVisibility(View.GONE);
+            studentSubText.setVisibility(View.VISIBLE);
             studentIdEdit.setVisibility(View.GONE);
             studentIdText.setVisibility(View.VISIBLE);
 
@@ -207,12 +203,35 @@ public class SearchAndWarningActivity extends BaseActivity implements SearchAndW
                         showToast("일치하는 정보가 존재하지 않습니다.");
                         return;
                     }
-
                     warningStatus = setWarningStatus(false);
                 }
-
-
         }
-
     }
+
+    /*-------------------------유효성 체크 메소드-------------------------*/
+
+    @Override
+    public boolean isStudentIDFilled(){
+
+        String studentID = studentIdEdit.getText().toString();
+        studentID = studentID.trim();
+
+        if (studentID.getBytes().length <= 0)
+            return false;
+        else
+            return true;
+    }
+
+    @Override
+    public boolean isWarningFilled() {
+
+        String warning = warningEdit.getText().toString();
+        warning = warning.trim();
+
+        if (warning.getBytes().length <= 0)
+            return false;
+        else
+            return true;
+    }
+
 }

@@ -14,15 +14,21 @@ import com.example.medialab.R;
 
 import java.util.ArrayList;
 
+/** Recyclerview에서 사용될 adapter입니다.
+ *
+
+ */
+
 public class CurrentUserAdapter extends RecyclerView.Adapter<CurrentUserAdapter.ViewHolder> {
 
     private OnItemClickListener clickListener = null;
-
     private ArrayList<StudentVO> studentList = null ;
 
     public CurrentUserAdapter(ArrayList<StudentVO> studentList) {
         this.studentList = studentList ;
     }
+
+    /*----------------------------Recyclerview 필수 메소드--------------------------*/
 
     @NonNull
     @Override
@@ -55,19 +61,7 @@ public class CurrentUserAdapter extends RecyclerView.Adapter<CurrentUserAdapter.
         return studentList.size();
     }
 
-    public StudentVO getStudentVO(int position){
-        return studentList.get(position);
-    }
-
-    public void setStudentList(ArrayList<StudentVO> studentList){ this.studentList = studentList;}
-
-    public interface OnItemClickListener{
-        void onItemClick(View v, int pos);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener clickListener) {
-        this.clickListener = clickListener;
-    }
+    /*----------------------------ViewHolder 클래스---------------------------------*/
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -102,4 +96,23 @@ public class CurrentUserAdapter extends RecyclerView.Adapter<CurrentUserAdapter.
             });
         }
     }
+
+    /*----------------------------클릭 리스너 관련---------------------------------*/
+
+    public interface OnItemClickListener{
+        void onItemClick(View v, int pos);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+
+    /*---------------------------------기타 메소드-------------------------------*/
+
+    public StudentVO getStudentVO(int position){
+        return studentList.get(position);
+    }
+
+    public void setStudentList(ArrayList<StudentVO> studentList){ this.studentList = studentList;}
 }

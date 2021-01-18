@@ -13,15 +13,19 @@ import com.example.medialab.Presenter.SignUpContract;
 import com.example.medialab.Presenter.SignUpPresenter;
 import com.example.medialab.R;
 
+/** 학생이 본인의 정보를 등록하는 Activity입니다.
+ *
+ */
+
 public class SignUpActivity extends BaseActivity implements SignUpContract.View {
 
-    EditText nameEdit;
-    TextView studentIdText;
-    EditText departmentEdit;
-    Button signUpBtn;
+    private EditText nameEdit;
+    private TextView studentIdText;
+    private EditText departmentEdit;
+    private Button signUpBtn;
 
-    StudentVO studentVO;
-    SignUpPresenter signUpPresenter;
+    private StudentVO studentVO;
+    private SignUpPresenter signUpPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,15 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
 
         signUpPresenter = new SignUpPresenter(this);
         init();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        signUpPresenter.releaseView();
+        signUpPresenter = null;
+        studentVO=null;
     }
 
     public void onClick(View view) {
@@ -55,30 +68,6 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
                 signUpPresenter.signUpRequest(studentVO);
                 break;
         }
-    }
-
-    @Override
-    public boolean isNameFilled() {
-
-        String name = nameEdit.getText().toString();
-        name = name.trim();
-
-        if(name.getBytes().length <= 0)
-            return false;
-        else
-            return true;
-    }
-
-    @Override
-    public boolean isDepartmentFilled() {
-
-        String department = departmentEdit.getText().toString();
-        department = department.trim();
-
-        if(department.getBytes().length <= 0)
-            return false;
-        else
-            return true;
     }
 
     public void init(){
@@ -123,11 +112,29 @@ public class SignUpActivity extends BaseActivity implements SignUpContract.View 
         nameEdit.requestFocus();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    /*-------------------------유효성 체크 메소드-------------------------*/
 
-        signUpPresenter.releaseView();
-        signUpPresenter = null;
+    @Override
+    public boolean isNameFilled() {
+
+        String name = nameEdit.getText().toString();
+        name = name.trim();
+
+        if(name.getBytes().length <= 0)
+            return false;
+        else
+            return true;
+    }
+
+    @Override
+    public boolean isDepartmentFilled() {
+
+        String department = departmentEdit.getText().toString();
+        department = department.trim();
+
+        if(department.getBytes().length <= 0)
+            return false;
+        else
+            return true;
     }
 }

@@ -120,12 +120,13 @@
                 android:elevation="5dp"
                 android:textColor="@android:color/white"
                 android:backgroundTint="#9bcfdf"
-                android:text="수정"
+                android:text="삭제"
                 android:textSize="30dp"
                 android:fontFamily="@font/nanumbarungothicbold"
                 app:rippleColor="@color/colorAccent"
-                android:id="@+id/modifyBtnID"
+                android:id="@+id/deleteBtnID"
                 android:onClick="onClick"/>
+
 
             <com.google.android.material.button.MaterialButton
                 android:layout_width="150dp"
@@ -135,11 +136,11 @@
                 android:elevation="5dp"
                 android:textColor="@android:color/white"
                 android:backgroundTint="#9bcfdf"
-                android:text="삭제"
+                android:text="수정"
                 android:textSize="30dp"
                 android:fontFamily="@font/nanumbarungothicbold"
                 app:rippleColor="@color/colorAccent"
-                android:id="@+id/deleteBtnID"
+                android:id="@+id/modifyBtnID"
                 android:onClick="onClick"/>
 
         </LinearLayout>

@@ -36,14 +36,11 @@ public interface DBManageService {
                               String[] whereArgs );
 
     boolean isDateUpdate(String accessDate);
-
     void updateVisitorTable(String accessDate);
+    void updateMemberTable();
     void deleteVisitorTable(String accessDate);
-
     void changeVisitorTable(String accessDate);
-
-    boolean isTableExist(String date);
-
+    boolean isVisitorTableExist(String date);
+    boolean isMemberTableExist();
     void close();
-
 }

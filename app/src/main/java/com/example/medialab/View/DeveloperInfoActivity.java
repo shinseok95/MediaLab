@@ -11,16 +11,27 @@ import com.example.medialab.R;
 import com.vansuita.materialabout.builder.AboutBuilder;
 import com.vansuita.materialabout.views.AboutView;
 
+/** 개발자 정보를 보여주는 Activity입니다.
+ *
+ */
+
 public class DeveloperInfoActivity extends BaseActivity{
 
-    Button emergencyBtn;
-
+    Button emergencyBtn = null;
+    AboutView view=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_developer_info);
 
         init();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        view=null;
     }
 
     public void init(){
@@ -35,7 +46,7 @@ public class DeveloperInfoActivity extends BaseActivity{
                 return true;
             }
         });
-        AboutView view = AboutBuilder.with(this)
+        view = AboutBuilder.with(this)
                 .setPhoto(R.mipmap.profile_photo)
                 .setCover(Color.rgb(155,207,223))
                 .setName("신현석")
