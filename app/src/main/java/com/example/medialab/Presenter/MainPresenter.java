@@ -41,12 +41,12 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
 
         StudentVO studentVO = scanDataParsing(scanData);
 
-        /*
+
         if(!isRecentlyQR(studentVO.getEntranceTime())){
             view.showToast("QR 코드의 인증시간이 초과하였습니다.\n새로고침을 눌러주세요.");
             return;
         }
-        */
+
 
         boolean isDateUpdate = dBManager.isDateUpdate(studentVO.getAccessDay());
         boolean isVisitorTableExist = dBManager.isVisitorTableExist(studentVO.getAccessDay());
@@ -121,12 +121,12 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
 
         StudentVO studentVO = scanDataParsing(scanData); // QR 데이터 파싱
 
-        /*
+
         if(!isRecentlyQR(studentVO.getEntranceTime())){
             view.showToast("QR 코드의 인증시간이 초과하였습니다.\n새로고침을 눌러주세요.");
             return;
         }
-         */
+
 
         boolean isMemberTableExist = dBManager.isMemberTableExist();
 
@@ -150,14 +150,14 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
             return;
         }
 
-        /*
+        StudentVO studentVO = scanDataParsing(scanData); // QR 데이터 파싱
+
+
         if(!isRecentlyQR(studentVO.getEntranceTime())){
             view.showToast("QR 코드의 인증시간이 초과하였습니다.\n새로고침을 눌러주세요.");
             return;
         }
-         */
 
-        StudentVO studentVO = scanDataParsing(scanData); // QR 데이터 파싱
 
         boolean isMemberTableExist = dBManager.isMemberTableExist();
 

@@ -20,10 +20,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:paddingTop="5dp"
-            android:textSize="22dp"
-            android:text="Media Lab"
+            android:textSize="20dp"
+            android:text="MEDIA LAB"
             android:textColor="#0071b9"
-            android:fontFamily="@font/nanumbarungothicbold"/>
+            android:textStyle="bold"
+            android:fontFamily="@font/nanumgothicextrabold"/>
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -31,53 +32,62 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="#ffffff"
         android:gravity="center">
 
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:elevation="5dp"
+            android:layout_width="280dp"
+            android:layout_height="90dp"
+            app:elevation="50dp"
+            android:elevation="50dp"
             android:textColor="@android:color/white"
-            android:backgroundTint="#0071b9"
+            android:backgroundTint="#DE389BE0"
             android:text="QR 스캔"
-            android:textSize="40dp"
+            android:textSize="25sp"
             android:fontFamily="@font/nanumbarungothicbold"
-            android:layout_marginBottom="10dp"
-            app:icon="@drawable/qr_icon2"
-            app:iconSize="50dp"
+            android:layout_marginBottom="25dp"
+            app:cornerRadius="12dp"
+            app:iconSize="35dp"
+            android:paddingLeft="25dp"
             app:rippleColor="@color/colorAccent"
             android:id="@+id/entranceID"
             android:onClick="onClick"/>
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:elevation="5dp"
+            android:layout_width="280dp"
+            android:layout_height="90dp"
+            android:elevation="50dp"
+            app:elevation="50dp"
+
             android:textColor="@android:color/white"
-            android:backgroundTint="#0071b9"
+            android:backgroundTint="#DE389BE0 "
             android:text="정보등록"
-            android:textSize="40dp"
-            android:layout_marginBottom="15dp"
+            android:textSize="25sp"
+            android:layout_marginBottom="25dp"
             android:fontFamily="@font/nanumbarungothicbold"
-            app:icon="@drawable/person_icon"
-            app:iconSize="40dp"
+            app:iconSize="35dp"
+            app:cornerRadius="12dp"
+            android:paddingLeft="25dp"
             app:rippleColor="@color/colorAccent"
             android:id="@+id/signUpID"
             android:onClick="onClick"/>
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:elevation="5dp"
+            android:layout_width="280dp"
+            android:layout_height="90dp"
+            android:elevation="50dp"
+            app:elevation="50dp"
+
             android:textColor="@android:color/white"
-            android:backgroundTint="#0071b9"
+            android:backgroundTint="#DE389BE0 "
             android:text="정보조회"
-            android:textSize="40dp"
-            android:layout_marginBottom="15dp"
+            android:textSize="25sp"
+            android:layout_marginBottom="25dp"
             android:fontFamily="@font/nanumbarungothicbold"
-            app:icon="@drawable/search_icon"
-            app:iconSize="40dp"
+            app:iconSize="35dp"
+            app:cornerRadius="12dp"
+            android:paddingLeft="25dp"
             app:rippleColor="@color/colorAccent"
             android:id="@+id/infoSearchID"
             android:onClick="onClick"/>

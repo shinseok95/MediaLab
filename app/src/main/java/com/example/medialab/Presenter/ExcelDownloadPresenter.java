@@ -94,7 +94,9 @@ public class ExcelDownloadPresenter extends BasePresenter implements ExcelDownlo
                 cell = row.createCell(0);
                 cell.setCellValue(visitorCursor.getString(1));
                 cell = row.createCell(1);
-                cell.setCellValue(visitorCursor.getInt(2) + '(' + visitorCursor.getString(3) + ')');
+                //cell.setCellValue(visitorCursor.getInt(2) + "(" + visitorCursor.getString(3) + ")");
+                cell.setCellValue(visitorCursor.getInt(2) + "(" + visitorCursor.getString(3) + ")");
+
                 cell = row.createCell(2);
                 cell.setCellValue(visitorCursor.getString(4));
                 cell = row.createCell(3);
