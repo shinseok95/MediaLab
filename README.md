@@ -1,6 +1,6 @@
-# MediaLab
+# MediaLab 프로젝트
 
-<img src="https://user-images.githubusercontent.com/48644958/108073048-f6111d00-70aa-11eb-999d-c4a91ea73ea3.png" height="50%" width="50%"></img><br>
+<img src="https://user-images.githubusercontent.com/48644958/108073048-f6111d00-70aa-11eb-999d-c4a91ea73ea3.png" height="20%" width="20%"></img><br>
 
 ## 소개
 
