@@ -1,5 +1,7 @@
 # MediaLab
-미디어 커뮤니케이션학부 랩실의 명부 관리 앱<br>
+
+<img src="https://user-images.githubusercontent.com/48644958/108073048-f6111d00-70aa-11eb-999d-c4a91ea73ea3.png" height="50%" width="50%"></img><br>
+
 ## 소개
 
 ### 개발 동기
